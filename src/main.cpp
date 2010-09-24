@@ -5,14 +5,16 @@
 #include <SDL_image.h>
 #include "PlatformAPI.h"
 #include "OpenGL.h"
+#include "GlyphRender.h"
 
 #ifdef WIN32
 #include <windows.h>
 #endif
 
 static bool quitApp = false;
-
 static int gfxWidth = 800, gfxHeight = 600, gfxBPP = 24;
+
+static GlyphRenderer* fontRenderer;
 
 void System_Msg(std::string msg) {
 #ifdef WIN32
@@ -25,7 +27,6 @@ static Vector2 mousePos;
 static bool enableMouse = true;
 
 static void Initialize() {
-
 	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 
@@ -37,6 +38,8 @@ static void Initialize() {
 
 	SDL_ShowCursor(FALSE);
 
+	fontRenderer = new GlyphRenderer();
+	fontRenderer->loadFromConfig("Pericles.font.cfg");
 }
 
 static void Draw() {
@@ -55,6 +58,8 @@ static void Draw() {
 			glVertex(mousePos + Vector2(0, -12));
 		glEnd();
 	}
+
+	fontRenderer->drawString(Vector2(), 20.0f, "Swarm Intelligence Demo");
 
 	SDL_GL_SwapBuffers();
 }
@@ -93,8 +98,7 @@ static void HandleSDLEvent(SDL_Event* e) {
 
 
 int main(int argc, char* argv[]) {
-	std::string debugMap;
-
+	
 	if (SDL_Init(SDL_INIT_TIMER | SDL_INIT_VIDEO) < 0) {
 		System_Msg(SPrintf("SDL fails: %s", SDL_GetError()));
 		return -1;

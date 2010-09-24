@@ -105,6 +105,8 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Optimizer.h" />
+    <ClInclude Include="SqcConfig.h" />
     <ClInclude Include="util\CfgParser.h" />
     <ClInclude Include="util\Color.h" />
     <ClInclude Include="util\DebugTrace.h" />
