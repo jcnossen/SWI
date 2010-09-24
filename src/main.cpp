@@ -13,8 +13,6 @@
 static bool quitApp = false;
 
 static int gfxWidth = 800, gfxHeight = 600, gfxBPP = 24;
-static bool flipScreen = false;
-
 
 void System_Msg(std::string msg) {
 #ifdef WIN32
