@@ -90,6 +90,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="SqcConfig.cpp" />
+    <ClCompile Include="SWIApp.cpp" />
     <ClCompile Include="util\CfgParser.cpp" />
     <ClCompile Include="util\Color.cpp" />
     <ClCompile Include="util\DebugTrace.cpp" />
@@ -107,6 +109,7 @@
   <ItemGroup>
     <ClInclude Include="Optimizer.h" />
     <ClInclude Include="SqcConfig.h" />
+    <ClInclude Include="SWIApp.h" />
     <ClInclude Include="util\CfgParser.h" />
     <ClInclude Include="util\Color.h" />
     <ClInclude Include="util\DebugTrace.h" />

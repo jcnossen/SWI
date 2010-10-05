@@ -7,6 +7,7 @@
 
 #include "PlatformAPI.h"
 
+static GlyphRenderer* defaultRenderer = 0;
 std::vector<GlyphRenderer*> GlyphRenderer::loadedFonts;
 
 void GlyphRenderer::release() {
@@ -15,6 +16,15 @@ void GlyphRenderer::release() {
 		loadedFonts.erase(std::find(loadedFonts.begin(),loadedFonts.end(),this));
 	}
 }
+
+GlyphRenderer* GlyphRenderer::getDefaultRenderer()
+{
+	if (!defaultRenderer)
+		defaultRenderer = loadFromConfig("Pericles.font.cfg");
+
+	return defaultRenderer;
+}
+
 
 void GlyphRenderer::addRef() {
 	refCount++;
@@ -67,14 +77,17 @@ Vector2 GlyphRenderer::getStringDims(const char* text) {
 		if (text[a] == ' ')
 			pos += spaceWidth;
 		else {
-			int charIndex = charMap[text[a]];
-			GlyphChar& ch = chars[charIndex];
+			char ch = text[a];
+			CharMap::iterator chi = charMap.find(ch);
+			if (chi != charMap.end()) {
+				GlyphChar& ch = chars[chi->second];
+							
+				float w = ch.kernx2-ch.kernx1;
+				pos += w;
 			
-			float w = ch.kernx2-ch.kernx1;
-			pos += w;
-			
-			if (ch.h > maxH)
-				maxH = ch.h;
+				if (ch.h > maxH)
+					maxH = ch.h;
+			}
 		}
 	}
 	
@@ -92,7 +105,7 @@ void GlyphRenderer::drawString(Vector2 bottomLeft, float height, const char* tex
 	Vector2 dims = getStringDims(text);
 	
 	float scale = height / dims.y;
-	
+
 	drawStringWithScale(bottomLeft, Vector2(scale, scale), text);
 }
 
@@ -191,7 +204,7 @@ void GlyphRenderer::drawStringWithScale(Vector2 bottomLeft, Vector2 scale, const
 	
 	float pos = 0.0f;
 	Vector2 id = texture->invSize();
-	
+
 //	glColor4f(0,0,0,0);
 	
 	int charIndex;

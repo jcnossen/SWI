@@ -123,6 +123,7 @@ void RenderUtil::drawTexture(Vector2 bottomLeft, Vector2 topRight, Vector2 tcMin
 		(tcMin.x+tcSize.x), (tcMin.y+tcSize.y)
 	};
 
+//	GL_draw_quad(verts, true);
 	GL_draw_quad_tc(verts, tc, texture, alpha);
 }
 
@@ -161,6 +162,21 @@ void RenderUtil::setupCamera(Box2 box)
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	glOrthof(box.a.x, box.b.x, box.a.y, box.b.y, zNear, zFar);
+	glMatrixMode(GL_MODELVIEW);
+}
+
+void RenderUtil::beginCamera(Box2 box)
+{
+	glMatrixMode(GL_PROJECTION);
+	glPushMatrix();
+	setupCamera(box);
+
+}
+
+void RenderUtil::endCamera()
+{
+	glMatrixMode(GL_PROJECTION);
+	glPopMatrix();
 	glMatrixMode(GL_MODELVIEW);
 }
 
