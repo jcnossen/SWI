@@ -25,6 +25,8 @@ public:
 		return Box2(p.x-hw,p.y-hw,p.x+hw,p.y+hw);
 	}
 
+	float boundingCircleRadius();
+
 protected:
 	std::vector<Vector2> squares; // square size is determined by order
 };

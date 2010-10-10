@@ -1,6 +1,7 @@
 #include "StdIncl.h"
 #include "SqcConfig.h"
 #include "OpenGL.h"
+#include "Miniball.h"
 
 void SqcConfig::render()
 {
@@ -51,3 +52,21 @@ void SqcConfig::multiply(Vector2 v)
 		squares[i] *= v;
 }
 
+float SqcConfig::boundingCircleRadius()
+{
+	Miniball<2> mb;
+	for(int i=1;i<=(int)squares.size();i++)
+	{
+		Point<2> p;
+		for(int d0=-1;d0<=1;d0+=2)
+			for(int d1=-1;d1<=1;d1+=2)
+		    {
+				p[0]=squares[i-1].x+.5*i*d0; 
+				p[1]=squares[i-1].y+.5*i*d1; 
+				mb.check_in(p);
+			}
+	}
+	mb.build();
+
+	return sqrt(mb.squared_radius());
+}
