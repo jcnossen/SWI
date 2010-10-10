@@ -11,6 +11,11 @@ SWIApp::SWIApp()
 	drawingConfig->randomConfig(10);
 
 	drawingConfig->scalefix();
+
+	char tempbuf[1000];
+	sprintf(tempbuf,"Radius=%f\n",drawingConfig->boundingCircleRadius());
+	MessageBoxA(0, tempbuf, "Message:", MB_OK | MB_ICONERROR);
+
 }
 
 
