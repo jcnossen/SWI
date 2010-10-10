@@ -49,12 +49,17 @@ class RenderUtil
 public:
 	static void setupProjection();
 	static void setupCamera(Box2 box);
+	static void beginCamera(Box2 box);
+	static void endCamera();
 
 	static int width, height;
 
 	static void setScreenDims(int w,int h);
 	static Box2 screenBox() {
 		return Box2(0,0,width,height);
+	}
+	static Vector2 screenTopRight() {
+		return Vector2(width, height);
 	}
 
 	static void drawRotatedTexture(Texture* tex, Vector2 pos, Vector2 size, float angle);	

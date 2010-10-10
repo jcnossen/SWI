@@ -6,6 +6,8 @@
 #include "PlatformAPI.h"
 #include "OpenGL.h"
 #include "GlyphRender.h"
+#include "RenderSystem.h"
+#include "SWIApp.h"
 
 #ifdef WIN32
 #include <windows.h>
@@ -14,7 +16,7 @@
 static bool quitApp = false;
 static int gfxWidth = 800, gfxHeight = 600, gfxBPP = 24;
 
-static GlyphRenderer* fontRenderer;
+static SWIApp* app = 0;
 
 void System_Msg(std::string msg) {
 #ifdef WIN32
@@ -38,11 +40,22 @@ static void Initialize() {
 
 	SDL_ShowCursor(FALSE);
 
-	fontRenderer = new GlyphRenderer();
-	fontRenderer->loadFromConfig("Pericles.font.cfg");
+	pf_SetAppName("Swarm Intelligence Demo");
+
+	RenderUtil::setScreenDims(gfxWidth, gfxHeight);
+
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+	app = new SWIApp();
 }
 
 static void Draw() {
+	RenderUtil::setupProjection();
+	glClearColor(1,1,1,1);
+	glClear(GL_COLOR_BUFFER_BIT);
+
+	app->draw();
 
 	if (enableMouse) {
 		glBegin(GL_TRIANGLES);
@@ -59,8 +72,6 @@ static void Draw() {
 		glEnd();
 	}
 
-	fontRenderer->drawString(Vector2(), 20.0f, "Swarm Intelligence Demo");
-
 	SDL_GL_SwapBuffers();
 }
 
@@ -70,8 +81,9 @@ static void Tick()
 	if (enableMouse) {
 		bool mouseDown = (SDL_GetMouseState(0,0) & SDL_BUTTON_LEFT) != 0;
 
-
 	}
+
+	app->tick();
 }
 
 static void HandleKeyEvent (SDLKey k, bool down) {
@@ -86,7 +98,7 @@ static void HandleSDLEvent(SDL_Event* e) {
 		HandleKeyEvent (e->key.keysym.sym, true);
 	if (e->type==SDL_KEYUP)
 		HandleKeyEvent (e->key.keysym.sym, false);
-	if (e->type == SDL_MOUSEMOTION) 
+	if (e->type == SDL_MOUSEMOTION)
 		mousePos = Vector2(e->motion.x, gfxHeight - e->motion.y - 1);
 	if (e->type == SDL_QUIT)
 		quitApp=true;
@@ -127,6 +139,7 @@ int main(int argc, char* argv[]) {
 			Draw();
 		}
 
+		delete app;
 		SDL_Quit();
 #ifndef _DEBUG
 	}

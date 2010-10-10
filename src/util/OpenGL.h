@@ -45,3 +45,14 @@ inline void glQuad(Vector2* v, bool line=false) {
 	glDrawArrays(line ? GL_LINE_LOOP : GL_TRIANGLE_FAN, 0, 4);
 	glDisableClientState(GL_VERTEX_ARRAY);
 }
+
+
+inline void glRectLines(float x1, float y1, float x2, float y2) {
+	Vector2 v[4];
+	v[0].x = v[3].x = x1;
+	v[1].x = v[2].x = x2;
+	v[0].y = v[1].y = y1;
+	v[3].y = v[2].y = y2;
+	glQuad(v, true);
+}
+

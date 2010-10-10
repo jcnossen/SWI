@@ -162,6 +162,12 @@ struct Box2 {
 				(p.y>=a.y && p.y <= b.y);
 	}
 
+	bool overlaps(const Box2& box) {
+
+		return b.x > box.a.x && box.b.x > a.x && 
+			(b.y > box.a.y && box.b.y > a.y);
+	}
+
 	Vector2 size() {
 		return b-a;
 	}

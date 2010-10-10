@@ -26,7 +26,8 @@ public:
 
 	Texture* texture;
 
-	std::map<char, int> charMap;
+	typedef std::map<char, int> CharMap;
+	CharMap charMap;
 	int spaceWidth;
 	std::string config;
 	
@@ -43,6 +44,7 @@ public:
 
 	Vector2 getStringDims(const char* text);
 
+	static GlyphRenderer* getDefaultRenderer();
 	static GlyphRenderer* loadFromConfig(const char* cfg);
 private:
 	int refCount;
@@ -50,5 +52,4 @@ private:
 
 	static std::vector<GlyphRenderer*> loadedFonts;
 };
-
 
