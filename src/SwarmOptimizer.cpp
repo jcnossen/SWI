@@ -97,19 +97,13 @@ void SwarmOptimizer::initialize(int ndims, int nelems) {
 	swarm.resize(nelems);
 
 	for(ParticleVector::iterator j = swarm.begin(); j!= swarm.end(); ++j)
-<<<<<<< .mine	{
-		j->personalOptimum=0;
-		j->friendOptimum=0;
-		j->position.resize(ndims);
-		j->velocity.resize(ndims);
-	    j->personalBest.resize(ndims);
-=======	{
+	{
 		j->personalOptimum=0;
 		j->friendOptimum=0;
 		j->position.resize(ndims);
 		j->velocity.resize(ndims);
 		j->personalBest.resize(ndims);
->>>>>>> .theirs		j->friendBest.resize(ndims);
+		j->friendBest.resize(ndims);
 	}
 
 	setupGraph(); 

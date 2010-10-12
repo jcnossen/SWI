@@ -12,8 +12,10 @@ SWIApp::SWIApp()
 	
 	//initRandomOptimizer(nsquares);
 
-	optimizer = new SwarmOptimizer(SwarmConfig());
+    optimizer = new SwarmOptimizer(SwarmConfig());
 	optimizer->initialize(nsquares * 2, 60);
+
+	
 
 	SqcConfig cfg;
 	std::vector<float> params;
@@ -24,6 +26,7 @@ SWIApp::SWIApp()
 		cfg.collectParams(params);
 		optimizer->setElem(j, &params[0]);
 	}
+
 }
 
 
@@ -75,14 +78,28 @@ void SWIApp::optimizerTick()
 	SqcConfig config;
 	std::vector<float> params (optimizer->ndims);
 
+	std::vector<std::pair<float,int> > ranking;
+
+	while(dependencies.size()<optimizer->nelems) //JdR
+	{
+		dependencies.push_back(std::vector<int>(optimizer->ndims,-1)); //JdR
+					d_trace("vul aan\n");
+	}
+
 	// Calculate fitness values for each element
 	for (int i=0;i<optimizer->nelems;i++) {
 		optimizer->getElem(i, &params[0]);
+		
+		config.dependencies=dependencies[i]; //JdR
+		
+
 		config.initFromParams(params);
 		config.scaleFit();
 		config.computeBoundingCircle();
 		config.moveToCenter();
 		optimizer->setFitness(i, 20000-config.radius);
+
+		ranking.push_back(std::make_pair(config.radius,i)); //JdR
 
 		if (best.radius == 0.0f || config.radius < best.radius) {
 			best = config;
@@ -93,6 +110,9 @@ void SWIApp::optimizerTick()
 			d_trace("\n");
 		}
 	}
+	sort(ranking.begin(),ranking.end()); //JdR
+	for(int i=0;i<ranking.size();i++) //JdR
+		dependencies[ranking[ranking.size()-1-i].second]=dependencies[ranking[i].second]; //JdR
 
 	optimizer->tick();
 }

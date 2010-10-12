@@ -4,6 +4,8 @@ class SqcConfig {
 public:
 	SqcConfig();
 
+	std::vector<int> dependencies; //JdR
+
 	void save(std::string file);
 	void load(std::string file);
 
