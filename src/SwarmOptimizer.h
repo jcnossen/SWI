@@ -43,7 +43,7 @@ class SwarmOptimizer : public IOptimizer
 
 public:
 	SwarmOptimizer(SwarmConfig cfg);
-  void setupGraph();
+	void setupGraph();
 	void tick();
 	void initialize(int ndims, int nelems);
 	const char* name() { return "PSO"; }

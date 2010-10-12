@@ -83,7 +83,7 @@ static void Tick()
 
 	}
 
-	app->swarmTick();
+	app->tick();
 }
 
 static void HandleKeyEvent (SDLKey k, bool down) {

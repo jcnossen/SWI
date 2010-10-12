@@ -2,6 +2,8 @@
 
 class SqcConfig {
 public:
+	SqcConfig();
+
 	void save(std::string file);
 	void load(std::string file);
 
