@@ -28,7 +28,6 @@ public:
 	void moveToCenter();
 	void scaleFit();
 
-protected:
 	std::vector<Vector2> squares; // square size is determined by order
 };
 
