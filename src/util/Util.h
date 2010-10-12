@@ -65,3 +65,5 @@ std::vector<std::string> StringSplit(const std::string& str, char sep);
 std::string GetPathFromFile(const std::string& file);
 bool FileExists(const char* filename);
 float UnitRandom();
+float UniformRandom(float low, float high);
+float RandomNormalDistributed(double mean, double stdev);

@@ -9,16 +9,7 @@ public:
 	virtual void getElem(float* params) = 0;
 };
 
-class SwarmOptimizer : public IOptimizer
-{
-public:
-	SwarmOptimizer();
 
-	const char* name() { return "PSO"; }
-	void initialize(int ndims, int nelems);
-	void tick(float* fitness);
-	void getElem(float* params);
-};
 
 
 class GAOptimizer : public IOptimizer

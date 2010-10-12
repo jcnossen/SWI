@@ -40,7 +40,7 @@ static void Initialize() {
 
 	SDL_ShowCursor(FALSE);
 
-	pf_SetAppName("Swarm Intelligence Demo");
+	pf_SetAppName("SwarmOptimizer Intelligence Demo");
 
 	RenderUtil::setScreenDims(gfxWidth, gfxHeight);
 

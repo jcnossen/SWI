@@ -70,3 +70,21 @@ float UnitRandom()
 	return rand() / (float)RAND_MAX;
 }
 
+
+float RandomNormalDistributed(double mean, double stdev)
+{
+  float U1=rand()/(float)RAND_MAX;
+  float U2=rand()/(float)RAND_MAX;
+
+  float Z=sqrt(-2*log(U1))*cos(2*3.14159265358979*U2);
+
+  return Z*stdev+mean;
+}
+
+float UniformRandom(float low, float high)
+{
+  return (rand()/(float)RAND_MAX)*(high-low)+low;
+}
+
+
+

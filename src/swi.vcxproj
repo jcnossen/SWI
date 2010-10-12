@@ -95,7 +95,11 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="SqcConfig.cpp" />
+    <ClCompile Include="SwarmOptimizer.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="SWIApp.cpp" />
+    <ClCompile Include="ThreadManager.cpp" />
     <ClCompile Include="util\CfgParser.cpp" />
     <ClCompile Include="util\Color.cpp" />
     <ClCompile Include="util\DebugTrace.cpp" />
@@ -113,7 +117,9 @@
   <ItemGroup>
     <ClInclude Include="Optimizer.h" />
     <ClInclude Include="SqcConfig.h" />
+    <ClInclude Include="SwarmOptimizer.h" />
     <ClInclude Include="SWIApp.h" />
+    <ClInclude Include="ThreadManager.h" />
     <ClInclude Include="util\CfgParser.h" />
     <ClInclude Include="util\Color.h" />
     <ClInclude Include="util\DebugTrace.h" />
