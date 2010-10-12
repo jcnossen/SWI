@@ -26,6 +26,7 @@ SWIApp::SWIApp()
 		cfg.collectParams(params);
 		swarmOptimizer->setElem(j, &params[0]);
 	}
+
 	best=0;
 }
 
@@ -54,14 +55,13 @@ void SWIApp::draw()
 	config.render();
 	RenderUtil::drawCircle(config.center, config.radius, false);
 	glPopMatrix();
-	glPopMatrix();
 	RenderUtil::endCamera();
 
 	glColor4ub(255,255,255,255);
 
-	drawingConfig->scaleFit();
-	drawingConfig->computeBoundingCircle();
-	drawingConfig->moveToCenter();
+//	drawingConfig->scaleFit();
+//	drawingConfig->computeBoundingCircle();
+//	drawingConfig->moveToCenter();
 
 	GlyphRenderer::getDefaultRenderer()->drawString(Vector2(100, 50), 20.0f, 
 		SPrintf("r=%f, x=%f, y=%f", drawingConfig->radius,drawingConfig->center.x,drawingConfig->center.y).c_str());
@@ -88,6 +88,7 @@ void SWIApp::tick()
 
 		if(config.radius < best_radius) {
 			best = i;
+			best_radius = config.radius;
 		}
 	}
 
