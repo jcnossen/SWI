@@ -4,6 +4,10 @@
 #include "Miniball.h"
 #include "RenderSystem.h"
 
+SqcConfig::SqcConfig() {
+	radius=0.0f;
+}
+
 void SqcConfig::render(float displayRadius)
 {
 	float factor=displayRadius/radius;

@@ -97,14 +97,14 @@ void SwarmOptimizer::initialize(int ndims, int nelems) {
 	swarm.resize(nelems);
 
 	for(ParticleVector::iterator j = swarm.begin(); j!= swarm.end(); ++j)
-  {
-    j->personalOptimum=0;
-    j->friendOptimum=0;
-    j->position.resize(ndims);
-    j->velocity.resize(ndims);
-    j->personalBest.resize(ndims);
+	{
+		j->personalOptimum=0;
+		j->friendOptimum=0;
+		j->position.resize(ndims);
+		j->velocity.resize(ndims);
+		j->personalBest.resize(ndims);
 		j->friendBest.resize(ndims);
-  }
+	}
 
 	setupGraph(); 
 }
@@ -117,18 +117,18 @@ void SwarmOptimizer::tick()
 	for(ParticleVector::iterator j = swarm.begin(); j!=swarm.end(); ++j)
 	{
 		//if there is an improvement...
-    if(j->fitness>j->personalOptimum)
-    {
-      //update the personal best
-      j->personalOptimum=j->fitness;
-      j->personalBest=j->position;
+		if(j->fitness>j->personalOptimum)
+		{
+			//update the personal best
+			j->personalOptimum=j->fitness;
+			j->personalBest=j->position;
       
-      //perhaps also update the friends best
-      if(j->fitness>j->friendOptimum)
-      {
-        j->friendOptimum=j->fitness;
-        j->friendBest=j->position;
-      }
+			//perhaps also update the friends best
+			if(j->fitness>j->friendOptimum)
+			{
+				j->friendOptimum=j->fitness;
+				j->friendBest=j->position;
+			}
       
       //Broadcast this result to friends
       for(int k=0;k<(int)j->friends.size();k++)
