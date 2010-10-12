@@ -13,6 +13,7 @@ public:
 	void render();
 	SqcConfig* interpolate(SqcConfig *b, float t);
 
+	void initFromParams(std::vector<float>& src);
 	void collectParams(std::vector<float>& dst);
 	void randomConfig(int n);
 

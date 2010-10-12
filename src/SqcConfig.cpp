@@ -64,6 +64,21 @@ void SqcConfig::scaleFit()
 		squares[i]*=factor;
 }
 
+void SqcConfig::collectParams(std::vector<float> &params) {
+	params.resize(squares.size()*2);
+	for (int i=0;i<squares.size();i++) {
+		params[i*2+0] = squares[i].x;
+		params[i*2+1] = squares[i].y;
+	}
+}
+
+void SqcConfig::initFromParams(std::vector<float>& src) {
+	squares.resize(src.size()/2);
+	for(int i=0;i<squares.size();i++) {
+		squares[i].x = src[i*2+0];
+		squares[i].y = src[i*2+1];
+	}
+}
 
 void SqcConfig::multiply(Vector2 v)
 {
@@ -97,5 +112,5 @@ void SqcConfig::moveToCenter()
 {
 	for(int i=0;i<squares.size();i++)
 	 	squares[i]-=center;
-	center.x=center.y=0;
+	center = Vector2();
 }

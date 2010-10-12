@@ -2,7 +2,6 @@
 #include "SwarmOptimizer.h"
 
 const char* SwarmOptimizer::graphTypeNames[] = {
-
   "star topology",
   "cycle topology",
   "Kn topology",
@@ -35,7 +34,7 @@ void SwarmOptimizer::setupGraph()
     }
 		break;
 	case ST_CYCLE:
-    for(i=0;i<populationSize;i++)
+    for(i=0;i<swarm.size();i++)
     {
       swarm[i].friends.push_back((i+1)%ss);
       swarm[(i+1)%ss].friends.push_back(i);
@@ -75,7 +74,7 @@ void SwarmOptimizer::setupGraph()
 	case ST_RANDOM:
     for(i=0;i<ss;i++)
       for(j=i+1;j<ss;j++)
-        if(rand()%1000<1000*randomParam)
+        if(rand()%1000<1000*config.randomParam)
         {
           swarm[j].friends.push_back(i);
           swarm[i].friends.push_back(j);        
@@ -92,16 +91,19 @@ SwarmOptimizer::SwarmOptimizer(SwarmConfig cfg)
 
 void SwarmOptimizer::initialize(int ndims, int nelems) {
 
+	this->ndims = ndims;
+	this->nelems = nelems;
+
 	swarm.resize(nelems);
 
-  for(int j=0;j<swarm.size();j++)
+	for(ParticleVector::iterator j = swarm.begin(); j!= swarm.end(); ++j)
   {
-    swarm[j].personalOptimum=0;
-    swarm[j].friendOptimum=0;
-    swarm[j].position.resize(ndims);
-    swarm[j].velocity.resize(ndims);
-    swarm[j].personalBest.resize(ndims);
-		swarm[j].friendBest.resize(ndims);
+    j->personalOptimum=0;
+    j->friendOptimum=0;
+    j->position.resize(ndims);
+    j->velocity.resize(ndims);
+    j->personalBest.resize(ndims);
+		j->friendBest.resize(ndims);
   }
 
 	setupGraph(); 
@@ -109,56 +111,71 @@ void SwarmOptimizer::initialize(int ndims, int nelems) {
 
 
 //This function assumes the new fitnessvalues have just been updated
-void SwarmOptimizer::tick(float* fitness)
+void SwarmOptimizer::tick()
 {
   //First update the personalBest and friendBest
-  for(int j=0;j<swarm.size;j++)
-  {
-    //if there is an improvement...
-    if(swarm[j].fitness>swarm[j].personalOptimum)
+	for(ParticleVector::iterator j = swarm.begin(); j!=swarm.end(); ++j)
+	{
+		//if there is an improvement...
+    if(j->fitness>j->personalOptimum)
     {
       //update the personal best
-      swarm[j].personalOptimum=swarm[j].fitness;
-      swarm[j].personalBest=swarm[j].position;
+      j->personalOptimum=j->fitness;
+      j->personalBest=j->position;
       
       //perhaps also update the friends best
-      if(swarm[j].fitness>swarm[j].friendOptimum)
+      if(j->fitness>j->friendOptimum)
       {
-        swarm[j].friendOptimum=swarm[j].fitness;
-        swarm[j].friendBest=swarm[j].position;
+        j->friendOptimum=j->fitness;
+        j->friendBest=j->position;
       }
       
       //Broadcast this result to friends
-      for(int k=0;k<(int)swarm[j].friends.size();k++)
+      for(int k=0;k<(int)j->friends.size();k++)
       {      
-        int f=swarm[j].friends[k];
-        if(swarm[j].fitness>swarm[f].friendOptimum)
+        int f=j->friends[k];
+        if(j->fitness>swarm[f].friendOptimum)
         {
-          swarm[f].friendOptimum=swarm[j].fitness;
-          swarm[f].friendBest=swarm[j].position;
+          swarm[f].friendOptimum=j->fitness;
+          swarm[f].friendBest=j->position;
         }
       }
     }
   }
 
   //Then adjust the position and velocity vectors
-  for(int j=0;j<populationSize;j++)
+	for(ParticleVector::iterator j = swarm.begin(); j != swarm.end(); ++j)
   {
     //update velocity  
-    for(i=0;i<ndims;i++)
-    {
-      swarm[j].velocity[i]*=omega;
-      swarm[j].velocity[i]+=Uniform(0,phi1)*(swarm[j].personalBest[i]-swarm[j].position[i]);
-      swarm[j].velocity[i]+=Uniform(0,phi2)*(swarm[j].friendBest[i]-swarm[j].position[i]);    
+    for(int i=0;i<ndims;i++) {
+      j->velocity[i]*=config.omega;
+      j->velocity[i]+=UniformRandom(0,config.phi1)*(j->personalBest[i]-j->position[i]);
+      j->velocity[i]+=UniformRandom(0,config.phi2)*(j->friendBest[i]-j->position[i]);    
     }
 
     //update position  
-    for(i=0;i<dimension;i++)
-      swarm[j].position[i]=max(paramRanges[i].min,min(paramRanges[i].max,swarm[j].position[i]+swarm[j].velocity[i]));
+    for(int i=0;i<ndims;i++)
+			j->position[i] += j->velocity[i];
   }
 }
 
 
+void SwarmOptimizer::getElem(int elem, float* params) 
+{
+	const SwarmParticle& p = swarm[elem];
+	for(int i=0;i<ndims;i++) 
+		params[i] = p.position[i];
+}
 
 
 
+void SwarmOptimizer::setElem(int elem, float* params) 
+{
+	SwarmParticle& p = swarm[elem];
+	for(int i=0;i<ndims;i++) 
+		p.position[i] = params[i];
+}
+
+void SwarmOptimizer::setFitness(int elem, float fitness) {
+	swarm[elem].fitness = fitness;
+}

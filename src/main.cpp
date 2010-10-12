@@ -137,6 +137,7 @@ int main(int argc, char* argv[]) {
 			lastTicks = nTicks;
 
 			Draw();
+			Tick();
 		}
 
 		delete app;

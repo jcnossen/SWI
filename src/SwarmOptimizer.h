@@ -24,10 +24,10 @@ struct SwarmConfig
   float phi1,phi2,omega;
 };
 
-class Particle
+class SwarmParticle
 {
 public:
-  Particle() { personalOptimum=fitness=0.0f;}
+  SwarmParticle() { personalOptimum=fitness=0.0f;}
   float fitness,personalOptimum,friendOptimum;
   
   std::vector<float> position,velocity,personalBest,friendBest;
@@ -37,14 +37,19 @@ public:
 class SwarmOptimizer : public IOptimizer
 {
   std::vector<float> globalOptimal; 
-  std::vector<Particle> swarm;
+	typedef std::vector<SwarmParticle> ParticleVector;
+  ParticleVector swarm;
 	SwarmConfig config;
 
 public:
 	SwarmOptimizer(SwarmConfig cfg);
   void setupGraph();
-	void tick(float *fitness);
+	void tick();
 	void initialize(int ndims, int nelems);
+	const char* name() { return "PSO"; }
+	void getElem(int elem, float* params);
+	void setElem(int elem, float* params);
+	void setFitness(int elem, float fitness);
 
 	static int numGraphTypes();
 	static const char* graphTypeNames[];
