@@ -25,9 +25,11 @@ public:
 		return Box2(p.x-hw,p.y-hw,p.x+hw,p.y+hw);
 	}
 
-	float radius, centerx, centery;
+	float radius;
+	Vector2 center;
 	void computeBoundingCircle();
-	void scalefit();
+	void moveToCenter();
+	void scaleFit();
 
 protected:
 	std::vector<Vector2> squares; // square size is determined by order

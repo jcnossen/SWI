@@ -51,13 +51,19 @@ bool SqcConfig::isValid()
 
 //scale such that something touches and nothing overlaps
 //perhaps also fix centeroverlaps?
-void SqcConfig::scalefit()
+void SqcConfig::scaleFit()
 {
+	float factor=0.0;
 	for(int i=0;i<squares.size();i++)
 		for(int j=i+1;j<squares.size();j++)
 	 	{
+			float dx=fabs(squares[i].x-squares[j].x);
+			float dy=fabs(squares[i].y-squares[j].y);
+			//float mind=min(dx,dy);
 
+			//float goald=(i+j+2)/2.0;
 
+			//factor=max(factor,goald/mind);
 		}
 
 
@@ -88,6 +94,13 @@ void SqcConfig::computeBoundingCircle()
 
 	radius=sqrt(mb.squared_radius());
 	Point<2> p=mb.center();
-	centerx=p[0];
-	centery=p[1];
+	center.x=p[0]; 
+	center.y=p[1];
+}
+
+void SqcConfig::moveToCenter()
+{
+	for(int i=0;i<squares.size();i++)
+	 	squares[i]-=center;
+	center.x=center.y=0;
 }
