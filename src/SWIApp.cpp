@@ -11,11 +11,6 @@ SWIApp::SWIApp()
 	drawingConfig->randomConfig(10);
 
 	drawingConfig->scalefix();
-
-	char tempbuf[1000];
-	sprintf(tempbuf,"Radius=%f\n",drawingConfig->boundingCircleRadius());
-	MessageBoxA(0, tempbuf, "Message:", MB_OK | MB_ICONERROR);
-
 }
 
 
@@ -32,6 +27,12 @@ void SWIApp::draw()
 	RenderUtil::endCamera();
 
 	glColor4ub(255,255,255,255);
+
+	drawingConfig->computeBoundingCircle();
+	GlyphRenderer::getDefaultRenderer()->drawString(Vector2(100, 50), 20.0f, 
+		SPrintf("r=%f, x=%f, y=%f", drawingConfig->radius,drawingConfig->centerx,drawingConfig->centery).c_str());
+//	d_trace("r=%f, midx=%f midy=%f\n",r,x,y);
+
 	GlyphRenderer::getDefaultRenderer()->drawString(Vector2(100, 100), 20.0f, "Swarm Intelligence Demo");
 }
 

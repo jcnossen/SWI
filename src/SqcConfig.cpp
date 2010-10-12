@@ -10,7 +10,7 @@ void SqcConfig::render()
 		Vector2 p = squares[i];
 		glColor(Color::Black);
 		glRectf(p.x - hw, p.y - hw, p.x + hw, p.y + hw);
-		glColor(Color::White);
+		glColor(Color::Red);
 		glRectLines(p.x - hw, p.y - hw, p.x + hw, p.y + hw);
 	}
 }
@@ -24,6 +24,8 @@ void SqcConfig::randomConfig(int n)
 		float dist = UnitRandom() * n;
 
 		squares[i] = Vector2(angle) * dist;
+		//squares[i].x=squares[i].y=i;
+		
 	}
 }
 
@@ -46,13 +48,29 @@ bool SqcConfig::isValid()
 	return true;
 }
 
+
+//scale such that something touches and nothing overlaps
+//perhaps also fix centeroverlaps?
+void SqcConfig::scalefit()
+{
+	for(int i=0;i<squares.size();i++)
+		for(int j=i+1;j<squares.size();j++)
+	 	{
+
+
+		}
+
+
+}
+
+
 void SqcConfig::multiply(Vector2 v)
 {
 	for(int i=0;i<squares.size();i++)
 		squares[i] *= v;
 }
 
-float SqcConfig::boundingCircleRadius()
+void SqcConfig::computeBoundingCircle()
 {
 	Miniball<2> mb;
 	for(int i=1;i<=(int)squares.size();i++)
@@ -68,5 +86,8 @@ float SqcConfig::boundingCircleRadius()
 	}
 	mb.build();
 
-	return sqrt(mb.squared_radius());
+	radius=sqrt(mb.squared_radius());
+	Point<2> p=mb.center();
+	centerx=p[0];
+	centery=p[1];
 }
