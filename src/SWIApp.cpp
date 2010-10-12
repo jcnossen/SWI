@@ -6,15 +6,16 @@
 #include "RenderSystem.h"
 #include "SwarmOptimizer.h"
 
+
 SWIApp::SWIApp()
 {
 	drawingConfig = new SqcConfig();
-	drawingConfig->randomConfig(6);
+	drawingConfig->randomConfig(3);
 
 	drawingConfig->scaleFit();
 
 	swarmOptimizer = new SwarmOptimizer(SwarmConfig());
-	int nsquares = 20;
+	int nsquares = 3;
 	swarmOptimizer->initialize(nsquares * 2, 10);
 
 	SqcConfig cfg;
@@ -64,7 +65,10 @@ void SWIApp::draw()
 
 	GlyphRenderer::getDefaultRenderer()->drawString(Vector2(100, 50), 20.0f, SPrintf("r=%f", config.radius).c_str());
 //	d_trace("r=%f, midx=%f midy=%f\n",r,x,y);
-
+	std::vector<float> c;
+	config.collectParams(c);
+	for(int i=0;i<c.size();i+=2)
+		GlyphRenderer::getDefaultRenderer()->drawString(Vector2(40, 20*i), 20.0f, SPrintf("%f", c[i]).c_str());
 	GlyphRenderer::getDefaultRenderer()->drawString(Vector2(100, 100), 20.0f, "SwarmOptimizer Intelligence Demo");
 }
 

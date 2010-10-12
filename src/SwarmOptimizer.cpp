@@ -97,14 +97,14 @@ void SwarmOptimizer::initialize(int ndims, int nelems) {
 	swarm.resize(nelems);
 
 	for(ParticleVector::iterator j = swarm.begin(); j!= swarm.end(); ++j)
-  {
-    j->personalOptimum=0;
-    j->friendOptimum=0;
-    j->position.resize(ndims);
-    j->velocity.resize(ndims);
-    j->personalBest.resize(ndims);
+	{
+		j->personalOptimum=0;
+		j->friendOptimum=0;
+		j->position.resize(ndims);
+		j->velocity.resize(ndims);
+	    j->personalBest.resize(ndims);
 		j->friendBest.resize(ndims);
-  }
+	}
 
 	setupGraph(); 
 }
@@ -144,7 +144,7 @@ void SwarmOptimizer::tick()
   }
 
   //Then adjust the position and velocity vectors
-	for(ParticleVector::iterator j = swarm.begin(); j != swarm.end(); ++j)
+  for(ParticleVector::iterator j = swarm.begin(); j != swarm.end(); ++j)
   {
     //update velocity  
     for(int i=0;i<ndims;i++) {
@@ -155,7 +155,7 @@ void SwarmOptimizer::tick()
 
     //update position  
     for(int i=0;i<ndims;i++)
-			j->position[i] += j->velocity[i];
+		j->position[i] += j->velocity[i];
   }
 }
 
