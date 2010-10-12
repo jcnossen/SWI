@@ -17,6 +17,7 @@ private:
 	IOptimizer* optimizer;
 
 	void initRandomOptimizer(int nsquares);
+	void optimizerTick();
 
 	SqcConfig best;
 };

@@ -8,7 +8,7 @@
 
 SWIApp::SWIApp()
 {
-	int nsquares = 20;
+	int nsquares = 8;
 	
 	//initRandomOptimizer(nsquares);
 
@@ -60,10 +60,17 @@ void SWIApp::draw()
 	glColor4ub(255,255,255,255);
 
 	GlyphRenderer::getDefaultRenderer()->drawString(Vector2(100, 50), 20.0f, SPrintf("r=%f", best.radius).c_str());
-	GlyphRenderer::getDefaultRenderer()->drawString(Vector2(100, 100), 20.0f, "optimizer Intelligence Demo");
+	GlyphRenderer::getDefaultRenderer()->drawString(Vector2(100, 70), 20.0f, "Swarm Intelligence Demo");
 }
 
 void SWIApp::tick()
+{
+	for (int i=0;i<10;i++)
+		optimizerTick();
+}
+
+
+void SWIApp::optimizerTick()
 {
 	SqcConfig config;
 	std::vector<float> params (optimizer->ndims);
@@ -79,10 +86,13 @@ void SWIApp::tick()
 
 		if (best.radius == 0.0f || config.radius < best.radius) {
 			best = config;
+			d_trace("New best: %f\n", best.radius);
+			for (int i=0;i<best.squares.size();i++) {
+				d_trace(" (%f,%f);", best.squares[i].x, best.squares[i].y);
+			}
+			d_trace("\n");
 		}
 	}
 
 	optimizer->tick();
 }
-
-
