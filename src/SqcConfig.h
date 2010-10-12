@@ -17,8 +17,7 @@ public:
 	void randomConfig(int n);
 
 	void multiply(Vector2 v);
-	void scalefix();
-	bool isValid(); // any overlapping?
+
 	Box2 getBox(int i) {
 		float hw=(i+1)*0.5f;
 		Vector2 p = squares[i];

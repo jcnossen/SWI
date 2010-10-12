@@ -20,53 +20,48 @@ void SqcConfig::randomConfig(int n)
 	squares.resize(n);
 
 	for (int i=0;i<n;i++) {
-		float angle = UnitRandom() * 2 * PI;
-		float dist = UnitRandom() * n;
+		//float angle = UnitRandom() * 2 * PI;
+		//float dist = UnitRandom() * n;
 
-		squares[i] = Vector2(angle) * dist;
-		//squares[i].x=squares[i].y=i;
+		//squares[i] = Vector2(angle) * dist;
+		squares[i].x=squares[i].y=i;
 		
 	}
 }
 
-void SqcConfig::scalefix()
-{
-	while (!isValid())
-		multiply(Vector2(1.1f, 1.1f));
-}
-
-bool SqcConfig::isValid()
-{
-	for (int i=0;i<squares.size();i++) {
-		for (int j=0;j<squares.size();j++) {
-			if (i==j) continue;
-
-			if (getBox(i).overlaps(getBox(j)))
-				return false;
-		}
-	}
-	return true;
-}
-
 
 //scale such that something touches and nothing overlaps
-//perhaps also fix centeroverlaps?
 void SqcConfig::scaleFit()
 {
+    //first make sure no centers are equal
+	bool check=true;
+	while(check)
+	{
+	    check=false;
+		for(int i=0;i<squares.size();i++)
+			for(int j=i+1;j<squares.size();j++)
+				if((squares[i]-squares[j]).length2() < 0.01f)
+				{
+					squares[i].x+=.5f;
+					check=true;
+				}
+	}
+	
 	float factor=0.0;
 	for(int i=0;i<squares.size();i++)
 		for(int j=i+1;j<squares.size();j++)
 	 	{
 			float dx=fabs(squares[i].x-squares[j].x);
 			float dy=fabs(squares[i].y-squares[j].y);
-			//float mind=min(dx,dy);
+			float maxd=std::max(dx,dy);
 
-			//float goald=(i+j+2)/2.0;
+			float goald=(i+j+2)/2.0;
 
-			//factor=max(factor,goald/mind);
+			factor=std::max(factor,goald/maxd);
 		}
 
-
+	for(int i=0;i<squares.size();i++)
+		squares[i]*=factor;
 }
 
 

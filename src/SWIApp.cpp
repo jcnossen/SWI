@@ -10,7 +10,7 @@ SWIApp::SWIApp()
 	drawingConfig = new SqcConfig();
 	drawingConfig->randomConfig(10);
 
-	drawingConfig->scalefix();
+	drawingConfig->scaleFit();
 }
 
 
@@ -28,8 +28,10 @@ void SWIApp::draw()
 
 	glColor4ub(255,255,255,255);
 
+	drawingConfig->scaleFit();
 	drawingConfig->computeBoundingCircle();
 	drawingConfig->moveToCenter();
+
 	GlyphRenderer::getDefaultRenderer()->drawString(Vector2(100, 50), 20.0f, 
 		SPrintf("r=%f, x=%f, y=%f", drawingConfig->radius,drawingConfig->center.x,drawingConfig->center.y).c_str());
 //	d_trace("r=%f, midx=%f midy=%f\n",r,x,y);
