@@ -2,17 +2,22 @@
 #include "SqcConfig.h"
 #include "OpenGL.h"
 #include "Miniball.h"
+#include "RenderSystem.h"
 
-void SqcConfig::render()
+void SqcConfig::render(float displayRadius)
 {
+	float factor=displayRadius/radius;
+
+	RenderUtil::drawCircle(Vector2(), displayRadius, true);
 	for (int i=0;i<squares.size();i++) {
-		float hw = (i+1)*.5f;
-		Vector2 p = squares[i];
+		float hw = (i+1)*.5f*factor;
+		Vector2 p = squares[i]*factor;
 		glColor(Color::Black);
 		glRectf(p.x - hw, p.y - hw, p.x + hw, p.y + hw);
 		glColor(Color::Red);
 		glRectLines(p.x - hw, p.y - hw, p.x + hw, p.y + hw);
 	}
+
 }
 
 void SqcConfig::randomConfig(int n)
@@ -20,11 +25,11 @@ void SqcConfig::randomConfig(int n)
 	squares.resize(n);
 
 	for (int i=0;i<n;i++) {
-		//float angle = UnitRandom() * 2 * PI;
-		//float dist = UnitRandom() * n;
+		float angle = UnitRandom() * 2 * PI;
+		float dist = UnitRandom() * n;
 
-		//squares[i] = Vector2(angle) * dist;
-		squares[i].x=squares[i].y=i;
+		squares[i] = Vector2(angle) * dist;
+		//squares[i].x=squares[i].y=i;
 		
 	}
 }

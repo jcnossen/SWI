@@ -9,7 +9,7 @@
 SWIApp::SWIApp()
 {
 	drawingConfig = new SqcConfig();
-	drawingConfig->randomConfig(10);
+	drawingConfig->randomConfig(6);
 
 	drawingConfig->scaleFit();
 
@@ -54,7 +54,7 @@ void SWIApp::draw()
 	config.render();
 	RenderUtil::drawCircle(config.center, config.radius, false);
 	glPopMatrix();
-
+	glPopMatrix();
 	RenderUtil::endCamera();
 
 	glColor4ub(255,255,255,255);
