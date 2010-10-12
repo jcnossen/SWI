@@ -1,16 +1,11 @@
 #pragma once
 
-#include <string>
-#include <vector>
-
-#include "Vector2.h"
-
 class SqcConfig {
 public:
 	void save(std::string file);
 	void load(std::string file);
 
-	void render();
+	void render(float displayRadius=100.0);
 	SqcConfig* interpolate(SqcConfig *b, float t);
 
 	void collectParams(std::vector<float>& dst);

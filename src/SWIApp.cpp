@@ -8,7 +8,7 @@
 SWIApp::SWIApp()
 {
 	drawingConfig = new SqcConfig();
-	drawingConfig->randomConfig(10);
+	drawingConfig->randomConfig(6);
 
 	drawingConfig->scaleFit();
 }
@@ -25,9 +25,12 @@ void SWIApp::draw()
 	float aspect = RenderUtil::height / (float)RenderUtil::width;
 	RenderUtil::beginCamera(Box2(-s,-s*aspect,s,s*aspect));
 	glColor3ub(0,0,255);
-	RenderUtil::drawCircle(Vector2(), 10.0f, true);
+	glPushMatrix();
+	glScalef(.1f, .1f, .1f);
+	glTranslatef(200.0f, 0.0f, 0.0f);
+	
 	drawingConfig->render();
-
+	glPopMatrix();
 	RenderUtil::endCamera();
 
 	glColor4ub(255,255,255,255);
