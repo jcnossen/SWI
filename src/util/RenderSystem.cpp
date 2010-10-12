@@ -86,6 +86,19 @@ void RenderUtil::setScreenDims(int w,int h)
 	height = h;
 }
 
+void RenderUtil::drawCircle(Vector2 mid, float r, bool fill)
+{
+	glBegin(fill ? GL_POLYGON : GL_LINE_LOOP);
+
+	int steps = 40;
+	float step = 2*PI/steps;
+	for(float t = 0.0f; t < 2*PI; t += step) {
+		glVertex2f(cosf(t)*r, sinf(t)*r);
+	}
+
+	glEnd();
+}
+
 void RenderUtil::drawTexture(Box2 rc, Texture* texture, bool alpha)
 {
 	drawTexture(rc.a, rc.b, texture, alpha);

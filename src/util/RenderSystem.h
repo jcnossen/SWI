@@ -69,6 +69,8 @@ public:
 	static void drawTexture(Vector2 bottomLeft, Vector2 topRight, Vector2 tcMin, Vector2 tcSize, Texture* texture, bool alpha=false);
 	static void drawTexture(Vector2 bottomLeft, Vector2 topRight, Texture* texture, bool alpha=false);
 	static void drawTexture(Vector2 bottomLeft, Vector2 topRight, int x1,int y1,int w,int h, Texture* texture, bool alpha);
+
+	static void drawCircle(Vector2 mid, float r, bool fill);
 };
 
 template<typename T> class gl_data_type {};

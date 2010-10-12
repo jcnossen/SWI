@@ -40,7 +40,7 @@ static void Initialize() {
 
 	SDL_ShowCursor(FALSE);
 
-	pf_SetAppName("Swarm Intelligence Demo");
+	pf_SetAppName("SwarmOptimizer Intelligence Demo");
 
 	RenderUtil::setScreenDims(gfxWidth, gfxHeight);
 
@@ -83,13 +83,16 @@ static void Tick()
 
 	}
 
-	app->tick();
+	app->swarmTick();
 }
 
 static void HandleKeyEvent (SDLKey k, bool down) {
 	if (k == SDLK_ESCAPE)
 		quitApp=true;
 
+	if (k == SDLK_SPACE && down) {
+//		app->swarmTick();
+	}
 }
 
 
@@ -137,6 +140,7 @@ int main(int argc, char* argv[]) {
 			lastTicks = nTicks;
 
 			Draw();
+			Tick();
 		}
 
 		delete app;
