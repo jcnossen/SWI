@@ -14,8 +14,8 @@ SWIApp::SWIApp()
 	drawingConfig->scaleFit();
 
 	swarmOptimizer = new SwarmOptimizer(SwarmConfig());
-	int nsquares = 6;
-	swarmOptimizer->initialize(10, nsquares * 2);
+	int nsquares = 20;
+	swarmOptimizer->initialize(nsquares * 2, 10);
 
 	SqcConfig cfg;
 	std::vector<float> params;
@@ -43,7 +43,6 @@ void SWIApp::draw()
 	RenderUtil::beginCamera(Box2(-s,-s*aspect,s,s*aspect));
 	glColor3ub(0,0,255);
 	glPushMatrix();
-	glTranslatef(200.0f, 0.0f, 0.0f);
 //	RenderUtil::drawCircle(Vector2(), 10.0f, true);
 	SqcConfig config;
 	std::vector<float> bestp(swarmOptimizer->ndims);
@@ -52,7 +51,7 @@ void SWIApp::draw()
 	config.scaleFit();
 	config.computeBoundingCircle();
 	config.moveToCenter();
-	config.render();
+	config.render(20.0f);
 	RenderUtil::drawCircle(config.center, config.radius, false);
 	glPopMatrix();
 	RenderUtil::endCamera();
@@ -63,8 +62,7 @@ void SWIApp::draw()
 //	drawingConfig->computeBoundingCircle();
 //	drawingConfig->moveToCenter();
 
-	GlyphRenderer::getDefaultRenderer()->drawString(Vector2(100, 50), 20.0f, 
-		SPrintf("r=%f, x=%f, y=%f", drawingConfig->radius,drawingConfig->center.x,drawingConfig->center.y).c_str());
+	GlyphRenderer::getDefaultRenderer()->drawString(Vector2(100, 50), 20.0f, SPrintf("r=%f", config.radius).c_str());
 //	d_trace("r=%f, midx=%f midy=%f\n",r,x,y);
 
 	GlyphRenderer::getDefaultRenderer()->drawString(Vector2(100, 100), 20.0f, "SwarmOptimizer Intelligence Demo");
@@ -72,10 +70,13 @@ void SWIApp::draw()
 
 void SWIApp::tick()
 {
+}
+
+void SWIApp::swarmTick()
+{
 	SqcConfig config;
 
 	std::vector<float> params (swarmOptimizer->ndims);
-
 	float best_radius = 10000000.0f;
 
 	// Calculate fitness values for each element

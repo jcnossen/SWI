@@ -11,6 +11,7 @@ public:
 
 	void tick();
 	void draw();
+	void swarmTick();
 
 private:
 	SqcConfig* drawingConfig; // config that is currently being rendered

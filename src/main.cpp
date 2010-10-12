@@ -83,13 +83,16 @@ static void Tick()
 
 	}
 
-	app->tick();
+	app->swarmTick();
 }
 
 static void HandleKeyEvent (SDLKey k, bool down) {
 	if (k == SDLK_ESCAPE)
 		quitApp=true;
 
+	if (k == SDLK_SPACE && down) {
+//		app->swarmTick();
+	}
 }
 
 

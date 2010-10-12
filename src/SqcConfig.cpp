@@ -119,3 +119,4 @@ void SqcConfig::moveToCenter()
 	 	squares[i]-=center;
 	center = Vector2();
 }
+
