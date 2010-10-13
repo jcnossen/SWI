@@ -83,9 +83,14 @@ void SWIApp::swarmTick()
 	for (int i=0;i<swarmOptimizer->nelems;i++) {
 		swarmOptimizer->getElem(i, &params[0]);
 		config.initFromParams(params);
-		config.scaleFit();
-		config.computeBoundingCircle();
-		swarmOptimizer->setFitness(i, -config.radius);
+		//config.scaleFit();
+
+		if (config.isValid()) {
+			config.computeBoundingCircle();
+			swarmOptimizer->setFitness(i, -config.radius);
+		} else {
+			swarmOptimizer->setFitness(i, 10000.0f);
+		}
 
 		if(config.radius < best_radius) {
 			best = i;

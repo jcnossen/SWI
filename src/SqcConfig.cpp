@@ -20,6 +20,20 @@ void SqcConfig::render(float displayRadius)
 
 }
 
+bool SqcConfig::isValid()
+{
+	for (int i=0;i<squares.size();i++) {
+		for (int j=0;j<squares.size();j++) {
+			if (i==j) continue;
+
+			if (getBox(i).overlaps(getBox(j)))
+				return false;
+		}
+	}
+	return true;
+}
+
+
 void SqcConfig::randomConfig(int n)
 {
 	squares.resize(n);

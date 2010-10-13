@@ -25,6 +25,7 @@ public:
 	void computeBoundingCircle();
 	void moveToCenter();
 	void scaleFit();
+	bool isValid();
 
 protected:
 	std::vector<Vector2> squares; // square size is determined by order
