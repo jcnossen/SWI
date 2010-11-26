@@ -144,7 +144,7 @@ void SwarmOptimizer::tick()
   }
 
   //Then adjust the position and velocity vectors
-	for(ParticleVector::iterator j = swarm.begin(); j != swarm.end(); ++j)
+  for(ParticleVector::iterator j = swarm.begin(); j != swarm.end(); ++j)
   {
     //update velocity  
     for(int i=0;i<ndims;i++) {
@@ -155,7 +155,7 @@ void SwarmOptimizer::tick()
 
     //update position  
     for(int i=0;i<ndims;i++)
-			j->position[i] += j->velocity[i];
+		j->position[i] += j->velocity[i];
   }
 }
 

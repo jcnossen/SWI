@@ -20,6 +20,8 @@ private:
 	void initRandomOptimizer(int nsquares);
 	void optimizerTick();
 
+	std::vector<std::vector<int> > dependencies; //JdR
+
 	SqcConfig best;
 	ThreadManager threadManager;
 };
