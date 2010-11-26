@@ -12,7 +12,7 @@ struct SwarmConfig
 {
   SwarmConfig() { 
 		popSize=20; 
-		graphType=4;
+		graphType=ST_CYCLE;
 		randomParam=0.1f; 	
     phi1=phi2=1.49618f;
     omega=0.7298f;

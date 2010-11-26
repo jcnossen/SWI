@@ -1,6 +1,7 @@
 #pragma once
 
 #include "SqcConfig.h"
+#include "ThreadManager.h"
 
 class IOptimizer;
 
@@ -20,5 +21,6 @@ private:
 	void optimizerTick();
 
 	SqcConfig best;
+	ThreadManager threadManager;
 };
 
