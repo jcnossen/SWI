@@ -1,6 +1,9 @@
 #pragma once
 
 class SqcConfig;
+#include "SqcConfig.h"
+#include "ThreadManager.h"
+
 class IOptimizer;
 
 class SWIApp
@@ -14,8 +17,13 @@ public:
 	void swarmTick();
 
 private:
-	SqcConfig* drawingConfig; // config that is currently being rendered
-	IOptimizer* swarmOptimizer;
-	int best;
+	IOptimizer* optimizer;
+
+	void initRandomOptimizer(int nsquares);
+	void optimizerTick();
+
+
+	SqcConfig best;
+	ThreadManager threadManager;
 };
 
