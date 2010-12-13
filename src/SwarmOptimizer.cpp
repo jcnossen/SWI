@@ -187,8 +187,10 @@ void SwarmOptimizer::getElem(int elem, float* params)
 void SwarmOptimizer::setElem(int elem, float* params) 
 {
 	SwarmParticle& p = swarm[elem];
-	for(int i=0;i<ndims;i++) 
+	for(int i=0;i<ndims;i++) {
 		p.position[i] = params[i];
+		p.friendBest[i] = p.personalBest[i] = params[i];
+	}
 }
 
 void SwarmOptimizer::setFitness(int elem, float fitness) {
