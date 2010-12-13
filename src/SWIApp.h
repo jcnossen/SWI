@@ -14,7 +14,6 @@ public:
 
 	void tick();
 	void draw();
-	void swarmTick();
 
 private:
 	IOptimizer* optimizer;
