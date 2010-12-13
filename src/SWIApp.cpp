@@ -13,7 +13,7 @@ SWIApp::SWIApp()
 	
 	//initRandomOptimizer(nsquares);
 	std::vector<float> ranges = std::vector<float>(nsquares * 4);
-	for (int i=0;i<nsquares*2;i++) {
+	for (int i=0;i<(nsquares-1)*2;i++) {
 		ranges[i*2]=-10.0f;
 		ranges[i*2+1]=10.0f;
 	}
@@ -25,11 +25,11 @@ SWIApp::SWIApp()
 
   //optimizer = new ESOptimizer(ranges);
 	optimizer = new SwarmOptimizer(sc);
-	optimizer->initialize(nsquares * 2, 100);
+	optimizer->initialize( (nsquares-1) * 2, 100);
 
 	SqcConfig cfg;
 	std::vector<float> params;
-	params.reserve(nsquares * 2);
+	params.reserve( (nsquares-1) * 2);
 
 	for (int j=0;j<optimizer->nelems;j++) {
 		cfg.randomConfig(nsquares);
@@ -104,8 +104,8 @@ void SWIApp::optimizerTick()
 	if (best.fitness == 0.0f || last_best.fitness > best.fitness) {
 		best = last_best;
 		d_trace("New best radius: %f. Overlap: %f. Fitness: %f\n", best.radius, best.overlap, best.fitness);
-		for (int i=0;i<best.squares.size();i++)
-			d_trace(" (%f,%f);", best.squares[i].x, best.squares[i].y);
+		for (int i=0;i<best.nsquares();i++)
+			d_trace(" (%f,%f);", best.getSquare(i).x, best.getSquare(i).y);
 		d_trace("\n");
 	}
 
