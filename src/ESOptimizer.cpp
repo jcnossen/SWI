@@ -6,6 +6,7 @@ ESOptimizer::ESOptimizer(std::vector<float> ranges) {
 	matrix = 0;
 	fitness = 0;
 	this->ranges = ranges;
+	nadapt = 0;
 }
 
 ESOptimizer::~ESOptimizer() {
@@ -16,8 +17,9 @@ ESOptimizer::~ESOptimizer() {
 void ESOptimizer::initialize(int ndims, int nelems) {
 	this->ndims = ndims;
 	this->nelems = nelems;
+	nadapt = 1;
 
-	matrix = new float[ndims*nelems];
+	matrix = new float[(ndims+nadapt)*nelems];
 	fitness = new float[nelems];
 }
 
@@ -41,7 +43,9 @@ void ESOptimizer::setFitness(int elem, float fitness) {
 
 void ESOptimizer::tick() {
 
-	const int mu=15,sigma=.1;
+	const int mu=15;
+	float sigma=.3;
+	float p_crossover=.1;
 
 	//rank the offspring
 	std::vector<std::pair<float,int> > rank(nelems);
@@ -59,15 +63,22 @@ void ESOptimizer::tick() {
 	{
 		int p=rank[i].second;
 		for(int j=0;j<ndims;j++)
-			parents[i][j]=matrix[p*ndims+j];
+			parents[i][j]=matrix[p*(ndims+nadapt)+j];
 	}
 
 	//create new offspring
 	for(int i=0;i<nelems;i++)
 	{
 		int p=rand()%mu;
-		for(int j=0;j<ndims;j++) 
-			matrix[i*ndims+j]=parents[p][j]+RandomNormalDistributed(0,sigma);
+        int p2=rand()%mu;
+		for(int j=0;j<ndims+nadapt;j++) 
+		{
+			float d=RandomNormalDistributed(0,sigma);
+			//d_trace("random=%f\n",d);
+			if(d!=d) exit(0);
+			matrix[i*(ndims+nadapt)+j]=parents[((rand()%1000)/1000.0<p_crossover)?p:p2][j]+d;
+		}
+		
 	}
 
 

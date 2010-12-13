@@ -21,10 +21,10 @@ SWIApp::SWIApp() : graph(600, -10, 10)
 	SwarmConfig sc;
 	sc.graphType = ST_MULTISTAR;
 //	sc.phi1 = sc.phi2 = 0.4f;
-	sc.omega = 0.6f;
+	sc.omega = 0.7f;
 
-  //optimizer = new ESOptimizer(ranges);
-	optimizer = new SwarmOptimizer(sc);
+  optimizer = new ESOptimizer(ranges);
+	//optimizer = new SwarmOptimizer(sc);
 	optimizer->initialize( (nsquares-1) * 2, 100);
 
 	SqcConfig cfg;
