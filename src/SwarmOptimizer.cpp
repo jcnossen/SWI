@@ -111,7 +111,7 @@ void SwarmOptimizer::initialize(int ndims, int nelems) {
 
 	swarm.resize(nelems);
 
-	for(ParticleVector::iterator j = swarm.begin(); j!= swarm.end(); ++j)
+	for(ParticleVector::iterator j = swarm.begin(); j != swarm.end(); ++j)
   {
     j->personalOptimum=0;
     j->friendOptimum=0;

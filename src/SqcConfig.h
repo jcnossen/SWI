@@ -21,18 +21,21 @@ public:
 
 	Box2 getBox(int i) {
 		float hw=(i+1)*0.5f;
-		Vector2 p = squares[i];
+		Vector2 p = getSquare(i);
 		return Box2(p.x-hw,p.y-hw,p.x+hw,p.y+hw);
 	}
 
 	float radius, fitness, overlap;
 	Vector2 center;
 	void computeBoundingCircle();
-	void moveToCenter();
 	void scaleFit();
 	bool isValid();
 	float overlapscore();
 	void calcFitness();
+	Vector2 getSquare(int i) {
+		return i>0 ? squares[i-1] : Vector2();
+	}
+	int nsquares() { return squares.size()+1; }
 
 	std::vector<Vector2> squares; // square size is determined by order
 };
