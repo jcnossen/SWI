@@ -103,6 +103,7 @@
     <ClCompile Include="util\Color.cpp" />
     <ClCompile Include="util\DebugTrace.cpp" />
     <ClCompile Include="util\GlyphRender.cpp" />
+    <ClCompile Include="util\Graph.cpp" />
     <ClCompile Include="util\InputBuffer.cpp" />
     <ClCompile Include="util\math.cpp" />
     <ClCompile Include="util\PlatformAPI.cpp" />
@@ -124,6 +125,7 @@
     <ClInclude Include="util\Color.h" />
     <ClInclude Include="util\DebugTrace.h" />
     <ClInclude Include="util\GlyphRender.h" />
+    <ClInclude Include="util\Graph.h" />
     <ClInclude Include="util\InputBuffer.h" />
     <ClInclude Include="util\Matrix22.h" />
     <ClInclude Include="util\OpenGL.h" />
