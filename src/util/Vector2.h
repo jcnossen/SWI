@@ -163,9 +163,14 @@ struct Box2 {
 	}
 
 	bool overlaps(const Box2& box) {
-
 		return b.x > box.a.x && box.b.x > a.x && 
 			(b.y > box.a.y && box.b.y > a.y);
+	}
+
+	// distance to move one box out of the other.
+	float moveoutdistance(const Box2& box) {
+		return std::min(std::max(0.0f, std::min(b.x - box.a.x, box.b.x - a.x)),
+			std::max(0.0f, std::min(b.y - box.a.y, box.b.y - a.y)));
 	}
 
 	Vector2 size() {

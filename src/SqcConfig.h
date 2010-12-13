@@ -4,6 +4,8 @@ class SqcConfig {
 public:
 	SqcConfig() {
 		radius=0.0f;
+		fitness=0.0f;
+		overlap=0.0f;
 	}
 	void save(std::string file);
 	void load(std::string file);
@@ -23,12 +25,14 @@ public:
 		return Box2(p.x-hw,p.y-hw,p.x+hw,p.y+hw);
 	}
 
-	float radius;
+	float radius, fitness, overlap;
 	Vector2 center;
 	void computeBoundingCircle();
 	void moveToCenter();
 	void scaleFit();
 	bool isValid();
+	float overlapscore();
+	void calcFitness();
 
 	std::vector<Vector2> squares; // square size is determined by order
 };

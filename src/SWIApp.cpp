@@ -18,9 +18,13 @@ SWIApp::SWIApp()
 		ranges[i*2+1]=10.0f;
 	}
 
+	SwarmConfig sc;
+	sc.graphType = ST_MULTISTAR;
+//	sc.phi1 = sc.phi2 = 0.4f;
+	sc.omega = 0.9f;
 
     //optimizer = new ESOptimizer(ranges);
-	optimizer = new SwarmOptimizer(SwarmConfig());
+	optimizer = new SwarmOptimizer(sc);
 	optimizer->initialize(nsquares * 2, 100);
 
 	SqcConfig cfg;
@@ -63,8 +67,8 @@ void SWIApp::draw()
 
 	glColor4ub(255,255,255,255);
 
-	GlyphRenderer::getDefaultRenderer()->drawString(Vector2(100, 50), 20.0f, SPrintf("Overall r=%f", best.radius).c_str());
-	GlyphRenderer::getDefaultRenderer()->drawString(Vector2(600, 50), 20.0f, SPrintf("Last r=%f", last_best.radius).c_str());
+	GlyphRenderer::getDefaultRenderer()->drawString(Vector2(100, 50), 20.0f, SPrintf("Overall r=%f. F=%f", best.radius, best.fitness).c_str());
+	GlyphRenderer::getDefaultRenderer()->drawString(Vector2(500, 50), 20.0f, SPrintf("Last r=%f. F=%f", last_best.radius, last_best.fitness).c_str());
 	GlyphRenderer::getDefaultRenderer()->drawString(Vector2(100, 70), 20.0f, "Swarm Intelligence Demo");
 }
 
@@ -90,18 +94,18 @@ void SWIApp::optimizerTick()
 		optimizer->getElem(i, &params[0]);
 
 		config.initFromParams(params);
-		config.scaleFit();
-		config.computeBoundingCircle();
-		config.moveToCenter();
-		optimizer->setFitness(i, 20000-config.radius);
+		//config.scaleFit();
 
-		if (last_best.radius == 0.0f || config.radius < last_best.radius)
+		config.calcFitness();
+		optimizer->setFitness(i, config.fitness);
+
+		if (last_best.fitness == 0.0f || config.fitness > last_best.fitness)
 			last_best = config;
 	}
 
-	if (best.radius == 0.0f || last_best.radius < best.radius) {
+	if (best.fitness == 0.0f || last_best.fitness > best.fitness) {
 		best = last_best;
-		d_trace("New best: %f\n", best.radius);
+		d_trace("New best radius: %f. Overlap: %f. Fitness: %f\n", best.radius, best.overlap, best.fitness);
 		for (int i=0;i<best.squares.size();i++)
 			d_trace(" (%f,%f);", best.squares[i].x, best.squares[i].y);
 		d_trace("\n");

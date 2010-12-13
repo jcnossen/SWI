@@ -20,6 +20,19 @@ void SqcConfig::render(float displayRadius)
 
 }
 
+float SqcConfig::overlapscore()
+{
+	float sum = 0.0f;
+
+	for (int i=0;i<squares.size();i++) {
+		for (int j=0;j<i;j++) {
+			float s = getBox(i).moveoutdistance(getBox(j));
+			sum += s*s;
+		}
+	}
+	return sum;
+}
+
 bool SqcConfig::isValid()
 {
 	for (int i=0;i<squares.size();i++) {
@@ -31,6 +44,18 @@ bool SqcConfig::isValid()
 		}
 	}
 	return true;
+}
+
+
+void SqcConfig::calcFitness()
+{
+	computeBoundingCircle();
+	moveToCenter();
+	float os = 10*overlapscore();
+//	if (os > 0.0f) os += 10.0f;
+
+	overlap = os;
+	fitness = 20000 - radius - os;
 }
 
 
