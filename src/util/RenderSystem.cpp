@@ -93,7 +93,7 @@ void RenderUtil::drawCircle(Vector2 mid, float r, bool fill)
 	int steps = 40;
 	float step = 2*PI/steps;
 	for(float t = 0.0f; t < 2*PI; t += step) {
-		glVertex2f(cosf(t)*r, sinf(t)*r);
+		glVertex2f(mid.x+cosf(t)*r, mid.y+sinf(t)*r);
 	}
 
 	glEnd();

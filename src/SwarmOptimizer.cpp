@@ -6,7 +6,8 @@ const char* SwarmOptimizer::graphTypeNames[] = {
   "cycle topology",
   "Kn topology",
   "square grid topology",
-  "random graph"
+  "random graph",
+	"multistar"
 };
 
 int SwarmOptimizer::numGraphTypes() { 

@@ -7,7 +7,7 @@
 #include "SwarmOptimizer.h"
 #include "ESOptimizer.h"
 
-SWIApp::SWIApp()
+SWIApp::SWIApp() : graph(600, -10, 10)
 {
 	int nsquares = 8;
 	
@@ -54,17 +54,18 @@ void SWIApp::draw()
 	glPushMatrix();
 		glTranslatef(-20.0f, 0.0f, 0.0f);
 		best.render(15.0f);
-		RenderUtil::drawCircle(best.center, best.radius, false);
+		RenderUtil::drawCircle(Vector2(), best.radius, false);
 	glPopMatrix();
 	glPushMatrix();
 		glTranslatef(20.0f, 0.0f, 0.0f);
 		last_best.render(15.0f);
-		RenderUtil::drawCircle(last_best.center, last_best.radius, false);
+		RenderUtil::drawCircle(Vector2(), last_best.radius, false);
 	glPopMatrix();
 	RenderUtil::endCamera();
 
-	glColor4ub(255,255,255,255);
+	graph.render(Box2(20, 500, 800-20, 590));
 
+	glColor4ub(255,255,255,255);
 	GlyphRenderer::getDefaultRenderer()->drawString(Vector2(100, 50), 20.0f, SPrintf("Overall r=%f. F=%f", best.radius, best.fitness).c_str());
 	GlyphRenderer::getDefaultRenderer()->drawString(Vector2(500, 50), 20.0f, SPrintf("Last r=%f. F=%f", last_best.radius, last_best.fitness).c_str());
 	GlyphRenderer::getDefaultRenderer()->drawString(Vector2(100, 70), 20.0f, "Swarm Intelligence Demo");
@@ -108,7 +109,12 @@ void SWIApp::optimizerTick()
 			d_trace(" (%f,%f);", best.getSquare(i).x, best.getSquare(i).y);
 		d_trace("\n");
 	}
-
 	
 	optimizer->tick();
+
+	if (last_best.radius != 0.0f) {
+		std::vector<float> p;
+		last_best.collectParams(p);
+		graph.addTick(p);
+	}
 }

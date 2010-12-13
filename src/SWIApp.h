@@ -3,6 +3,7 @@
 class SqcConfig;
 #include "SqcConfig.h"
 #include "ThreadManager.h"
+#include "Graph.h"
 
 class IOptimizer;
 
@@ -24,5 +25,6 @@ private:
 	SqcConfig last_best; // best of last generation
 	SqcConfig best;
 	ThreadManager threadManager;
+	Graph graph;
 };
 
