@@ -42,33 +42,7 @@ void SqcConfig::randomConfig(int n)
 //scale such that something touches and nothing overlaps
 void SqcConfig::scaleFit()
 {
-    
-	//resolve dependencies
-	for(int i=0;i<squares.size();i++) //JdR
-	{
-		for(int d=0;d<2;d++)
-			if(rand()%dependencies.size()==0)
-			{
-				if(dependencies[i*2+d]>=0)
-					dependencies[i*2+d]=-1;
-				else
-					do
-					{
-						dependencies[i*2+d]=rand()%squares.size();
-					} 
-					while(dependencies[i*2+d]!=i);
-			}
-	
-
-		if(dependencies[i*2+0]>=0)
-			squares[i].x=squares[dependencies[i*2+0]].x+(dependencies[i*2+0]+i+2)/2.0;
-		if(dependencies[i*2+1]>=0)
-			squares[i].y=squares[dependencies[i*2+1]].y+(dependencies[i*2+1]+i+2)/2.0;
-	}
-	
-
-
-	//first make sure no centers are equal
+    //first make sure no centers are equal
 	bool check=true;
 	while(check)
 	{

@@ -90,6 +90,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ESOptimizer.cpp" />
     <ClCompile Include="Optimizer.cpp" />
     <ClCompile Include="PCH.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -113,6 +114,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ESOptimizer.h" />
     <ClInclude Include="Optimizer.h" />
     <ClInclude Include="SqcConfig.h" />
     <ClInclude Include="SwarmOptimizer.h" />

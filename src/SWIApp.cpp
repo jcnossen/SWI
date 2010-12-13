@@ -5,17 +5,23 @@
 #include "GlyphRender.h"
 #include "RenderSystem.h"
 #include "SwarmOptimizer.h"
+#include "ESOptimizer.h"
 
 SWIApp::SWIApp()
 {
 	int nsquares = 8;
 	
 	//initRandomOptimizer(nsquares);
+	std::vector<float> ranges = std::vector<float>(nsquares * 4);
+	for (int i=0;i<nsquares*2;i++) {
+		ranges[i*2]=-10.0f;
+		ranges[i*2+1]=10.0f;
+	}
 
-    optimizer = new SwarmOptimizer(SwarmConfig());
-	optimizer->initialize(nsquares * 2, 60);
 
-	
+    //optimizer = new ESOptimizer(ranges);
+	optimizer = new SwarmOptimizer(SwarmConfig());
+	optimizer->initialize(nsquares * 2, 100);
 
 	SqcConfig cfg;
 	std::vector<float> params;
@@ -80,17 +86,12 @@ void SWIApp::optimizerTick()
 
 	std::vector<std::pair<float,int> > ranking;
 
-	while(dependencies.size()<optimizer->nelems) //JdR
-	{
-		dependencies.push_back(std::vector<int>(optimizer->ndims,-1)); //JdR
-					d_trace("vul aan\n");
-	}
 
 	// Calculate fitness values for each element
 	for (int i=0;i<optimizer->nelems;i++) {
 		optimizer->getElem(i, &params[0]);
 		
-		config.dependencies=dependencies[i]; //JdR
+	
 		
 
 		config.initFromParams(params);
@@ -99,8 +100,7 @@ void SWIApp::optimizerTick()
 		config.moveToCenter();
 		optimizer->setFitness(i, 20000-config.radius);
 
-		ranking.push_back(std::make_pair(config.radius,i)); //JdR
-
+	
 		if (best.radius == 0.0f || config.radius < best.radius) {
 			best = config;
 			d_trace("New best: %f\n", best.radius);
@@ -110,9 +110,6 @@ void SWIApp::optimizerTick()
 			d_trace("\n");
 		}
 	}
-	sort(ranking.begin(),ranking.end()); //JdR
-	for(int i=0;i<ranking.size();i++) //JdR
-		dependencies[ranking[ranking.size()-1-i].second]=dependencies[ranking[i].second]; //JdR
-
+	
 	optimizer->tick();
 }
