@@ -21,7 +21,7 @@ private:
 	void initRandomOptimizer(int nsquares);
 	void optimizerTick();
 
-
+	SqcConfig last_best; // best of last generation
 	SqcConfig best;
 	ThreadManager threadManager;
 };

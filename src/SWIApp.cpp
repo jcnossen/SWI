@@ -50,14 +50,21 @@ void SWIApp::draw()
 	RenderUtil::beginCamera(Box2(-s,-s*aspect,s,s*aspect));
 	glColor3ub(0,0,255);
 	glPushMatrix();
-		best.render(20.0f);
+		glTranslatef(-20.0f, 0.0f, 0.0f);
+		best.render(15.0f);
 		RenderUtil::drawCircle(best.center, best.radius, false);
+	glPopMatrix();
+	glPushMatrix();
+		glTranslatef(20.0f, 0.0f, 0.0f);
+		last_best.render(15.0f);
+		RenderUtil::drawCircle(last_best.center, last_best.radius, false);
 	glPopMatrix();
 	RenderUtil::endCamera();
 
 	glColor4ub(255,255,255,255);
 
-	GlyphRenderer::getDefaultRenderer()->drawString(Vector2(100, 50), 20.0f, SPrintf("r=%f", best.radius).c_str());
+	GlyphRenderer::getDefaultRenderer()->drawString(Vector2(100, 50), 20.0f, SPrintf("Overall r=%f", best.radius).c_str());
+	GlyphRenderer::getDefaultRenderer()->drawString(Vector2(600, 50), 20.0f, SPrintf("Last r=%f", last_best.radius).c_str());
 	GlyphRenderer::getDefaultRenderer()->drawString(Vector2(100, 70), 20.0f, "Swarm Intelligence Demo");
 }
 
@@ -75,13 +82,12 @@ void SWIApp::optimizerTick()
 
 	std::vector<std::pair<float,int> > ranking;
 
+	// best of this generation
+	last_best = SqcConfig();
 
 	// Calculate fitness values for each element
 	for (int i=0;i<optimizer->nelems;i++) {
 		optimizer->getElem(i, &params[0]);
-		
-	
-		
 
 		config.initFromParams(params);
 		config.scaleFit();
@@ -89,16 +95,18 @@ void SWIApp::optimizerTick()
 		config.moveToCenter();
 		optimizer->setFitness(i, 20000-config.radius);
 
-	
-		if (best.radius == 0.0f || config.radius < best.radius) {
-			best = config;
-			d_trace("New best: %f\n", best.radius);
-			for (int i=0;i<best.squares.size();i++) {
-				d_trace(" (%f,%f);", best.squares[i].x, best.squares[i].y);
-			}
-			d_trace("\n");
-		}
+		if (last_best.radius == 0.0f || config.radius < last_best.radius)
+			last_best = config;
 	}
+
+	if (best.radius == 0.0f || last_best.radius < best.radius) {
+		best = last_best;
+		d_trace("New best: %f\n", best.radius);
+		for (int i=0;i<best.squares.size();i++)
+			d_trace(" (%f,%f);", best.squares[i].x, best.squares[i].y);
+		d_trace("\n");
+	}
+
 	
 	optimizer->tick();
 }

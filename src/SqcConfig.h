@@ -2,6 +2,9 @@
 
 class SqcConfig {
 public:
+	SqcConfig() {
+		radius=0.0f;
+	}
 	void save(std::string file);
 	void load(std::string file);
 
