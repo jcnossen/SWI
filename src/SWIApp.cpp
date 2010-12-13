@@ -21,9 +21,9 @@ SWIApp::SWIApp()
 	SwarmConfig sc;
 	sc.graphType = ST_MULTISTAR;
 //	sc.phi1 = sc.phi2 = 0.4f;
-	sc.omega = 0.9f;
+	sc.omega = 0.7f;
 
-    //optimizer = new ESOptimizer(ranges);
+  //optimizer = new ESOptimizer(ranges);
 	optimizer = new SwarmOptimizer(sc);
 	optimizer->initialize(nsquares * 2, 100);
 
@@ -98,6 +98,9 @@ void SWIApp::optimizerTick()
 
 		config.calcFitness();
 		optimizer->setFitness(i, config.fitness);
+
+		config.collectParams(params);
+		optimizer->setElem(i, &params[0]);
 
 		if (last_best.fitness == 0.0f || config.fitness > last_best.fitness)
 			last_best = config;
