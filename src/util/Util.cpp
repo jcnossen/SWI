@@ -73,11 +73,12 @@ float UnitRandom()
 
 float RandomNormalDistributed(double mean, double stdev)
 {
-  float U1=rand()/(float)RAND_MAX;
-  float U2=rand()/(float)RAND_MAX;
+  float U1=(rand()+1)/(float)(RAND_MAX+1);
+  float U2=(rand()+1)/(float)(RAND_MAX+1);
 
-  float Z=sqrt(-2*log(U1))*cos(2*3.14159265358979*U2);
+  float Z=sqrtf(-2*logf(U1))*cosf(2*3.14159265358979*U2);
 
+  //d_trace("U1=%f, U2=%f, Z=%f, ret=%f mean=%lf stdev=%lf\n",U1,U2,Z,(float)(Z*stdev+mean),mean,stdev);
   return Z*stdev+mean;
 }
 

@@ -16,9 +16,10 @@ public:
 	void setFitness(int elem, float fitness);
 
 protected:
-	float* elemRow(int elem) { return &matrix[elem * ndims]; }
+	float* elemRow(int elem) { return &matrix[elem * (ndims+nadapt)]; }
 
 	std::vector<float> ranges;
 	float *matrix;
 	float *fitness;
+	int nadapt;
 };
