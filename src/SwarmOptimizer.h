@@ -7,12 +7,13 @@
 #define ST_KN 2
 #define ST_SQUARE 3
 #define ST_RANDOM 4
+#define ST_MULTISTAR 5
 
 struct SwarmConfig
 {
   SwarmConfig() { 
 		popSize=20; 
-		graphType=ST_CYCLE;
+		graphType=ST_MULTISTAR;
 		randomParam=0.1f; 	
     phi1=phi2=1.49618f;
     omega=0.7298f;

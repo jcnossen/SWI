@@ -20,6 +20,7 @@ int SwarmOptimizer::numGraphTypes() {
 //                  2 -> Kn topology
 //                  3 -> square grid topology       
 //                  4 -> random graph
+//                  5 -> multiple small stars topology
 void SwarmOptimizer::setupGraph()
 {
   int i,j;
@@ -79,6 +80,20 @@ void SwarmOptimizer::setupGraph()
           swarm[j].friends.push_back(i);
           swarm[i].friends.push_back(j);        
         }
+
+	case ST_MULTISTAR:
+	int root=std::sqrt(float(ss));
+	for(i=0;i<ss;i++)
+	{
+		int fr=(i/root)*root;
+		if(fr!=i)
+		{
+			swarm[i].friends.push_back(fr);
+			swarm[fr].friends.push_back(i);
+		}
+	}
+
+
   }
 
 }
