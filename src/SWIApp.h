@@ -26,5 +26,6 @@ private:
 	SqcConfig best; // overall best
 	ThreadManager threadManager;
 	Graph graph;
+	float sigma;
 };
 

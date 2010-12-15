@@ -79,7 +79,9 @@ float RandomNormalDistributed(double mean, double stdev)
   float Z=sqrtf(-2*logf(U1))*cosf(2*3.14159265358979*U2);
 
   //d_trace("U1=%f, U2=%f, Z=%f, ret=%f mean=%lf stdev=%lf\n",U1,U2,Z,(float)(Z*stdev+mean),mean,stdev);
-  return Z*stdev+mean;
+  float r = Z*stdev+mean;
+	if (r!=r) throw std::runtime_error("Invalid random number generated");
+	return r;
 }
 
 float UniformRandom(float low, float high)
