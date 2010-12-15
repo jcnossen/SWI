@@ -77,6 +77,17 @@ void ESOptimizer::tick(float sigma) {
 			matrix[i*(ndims+nadapt)+j]=parents[((rand()%1000)/1000.0f<p_crossover)?p:p2][j]+d;
 		}
 		
+		for(int j=0;j<ndims;j+=2)
+		{
+			if(rand()%ndims==0)
+			{
+			  int a=j/2;
+			  int b=rand()%(ndims/2);
+			  std::swap(matrix[i*(ndims+nadapt)+a*2],matrix[i*(ndims+nadapt)+b*2]);
+			  std::swap(matrix[i*(ndims+nadapt)+a*2+1],matrix[i*(ndims+nadapt)+b*2+1]);
+			}
+
+		}
 	}
 
 

@@ -27,8 +27,8 @@ SWIApp::SWIApp() : graph(600, -10, 10)
 	sc.phi1 = 1.4f;
 	sc.phi2 = 1.4f;
 
-	optimizer = new ESOptimizer(ranges);
-	//optimizer = new SwarmOptimizer(sc);
+  optimizer = new ESOptimizer(ranges);
+//	optimizer = new SwarmOptimizer(sc);
 	optimizer->initialize( (nsquares-1) * 2, 100);
 
 	SqcConfig cfg;
