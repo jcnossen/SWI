@@ -25,7 +25,7 @@ SWIApp::SWIApp() : graph(600, -10, 10)
 	sc.phi1 = 1.4f;
 	sc.phi2 = 1.4f;
 
-  //optimizer = new ESOptimizer(ranges);
+ // optimizer = new ESOptimizer(ranges);
 	optimizer = new SwarmOptimizer(sc);
 	optimizer->initialize( (nsquares-1) * 2, 100);
 
@@ -104,7 +104,7 @@ void SWIApp::optimizerTick()
 		config.calcFitness();
 		optimizer->setFitness(i, config.fitness);
 
-		if (last_best.fitness == 0.0f || config.fitness > last_best.fitness)
+		if (last_best.fitness == 0.0f || config.fitness >= last_best.fitness)
 			last_best = config;
 	}
 

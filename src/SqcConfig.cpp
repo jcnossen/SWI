@@ -38,7 +38,7 @@ void SqcConfig::calcFitness()
 {
 	computeBoundingCircle();
 	float os = 10*overlapscore();
-//	if (os > 0.0f) os += 10.0f;
+	if (os > 0.0f) os += 10.0f;
 
 	overlap = os;
 	fitness = 1000 - radius - os;
