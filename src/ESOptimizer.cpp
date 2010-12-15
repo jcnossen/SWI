@@ -80,7 +80,7 @@ void ESOptimizer::tick() {
 		
 		for(int j=0;j<ndims;j+=2)
 		{
-			if(rand()%ndims==0)
+			if(rand()%ndims<=1)
 			{
 			  int a=j/2;
 			  int b=rand()%(ndims/2);
