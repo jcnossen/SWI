@@ -39,13 +39,16 @@ void ESOptimizer::setFitness(int elem, float fitness) {
 	this->fitness[elem] = fitness;
 }
 
-
+int tickcount2=0;
 
 void ESOptimizer::tick(float sigma) {
 
 	const int mu=15;
 	float sigma_=sigma*.1f;
 	float p_crossover=.1f;
+
+	tickcount2++;
+	sigma_=fabs(sin(tickcount2/1000.0))/4;
 
 	//rank the offspring
 	std::vector<std::pair<float,int> > rank(nelems);
