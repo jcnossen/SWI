@@ -21,10 +21,12 @@ SWIApp::SWIApp() : graph(600, -10, 10)
 	SwarmConfig sc;
 	sc.graphType = ST_MULTISTAR;
 //	sc.phi1 = sc.phi2 = 0.4f;
-	sc.omega = 0.7f;
+	sc.omega = 0.8f;
+	sc.phi1 = 1.4f;
+	sc.phi2 = 1.4f;
 
-  optimizer = new ESOptimizer(ranges);
-	//optimizer = new SwarmOptimizer(sc);
+  //optimizer = new ESOptimizer(ranges);
+	optimizer = new SwarmOptimizer(sc);
 	optimizer->initialize( (nsquares-1) * 2, 100);
 
 	SqcConfig cfg;
@@ -47,27 +49,31 @@ SWIApp::~SWIApp()
 
 void SWIApp::draw()
 {
-	float s=40;
-	float aspect = RenderUtil::height / (float)RenderUtil::width;
-	RenderUtil::beginCamera(Box2(-s,-s*aspect,s,s*aspect));
-	glColor3ub(0,0,255);
-	glPushMatrix();
-		glTranslatef(-20.0f, 0.0f, 0.0f);
-		best.render(15.0f);
-		RenderUtil::drawCircle(Vector2(), best.radius, false);
-	glPopMatrix();
-	glPushMatrix();
-		glTranslatef(20.0f, 0.0f, 0.0f);
-		last_best.render(15.0f);
-		RenderUtil::drawCircle(Vector2(), last_best.radius, false);
-	glPopMatrix();
-	RenderUtil::endCamera();
+	if (!best_list.empty()) {
+		float s=40;
+		float aspect = RenderUtil::height / (float)RenderUtil::width;
+		RenderUtil::beginCamera(Box2(-s,-s*aspect,s,s*aspect));
+		glColor3ub(0,0,255);
+		glPushMatrix();
+			glTranslatef(-20.0f, 0.0f, 0.0f);
+			best.render(15.0f);
+			RenderUtil::drawCircle(Vector2(), best.radius, false);
+		glPopMatrix();
+		glColor3ub(0,0,255);
+		SqcConfig& last_best = best_list.back();
+		glPushMatrix();
+			glTranslatef(20.0f, 0.0f, 0.0f);
+			last_best.render(15.0f);
+			RenderUtil::drawCircle(Vector2(), last_best.radius, false);
+		glPopMatrix();
+		RenderUtil::endCamera();
 
-	graph.render(Box2(20, 500, 800-20, 590));
+		graph.render(Box2(20, 500, 800-20, 590));
 
-	glColor4ub(255,255,255,255);
-	GlyphRenderer::getDefaultRenderer()->drawString(Vector2(100, 50), 20.0f, SPrintf("Overall r=%f. F=%f", best.radius, best.fitness).c_str());
-	GlyphRenderer::getDefaultRenderer()->drawString(Vector2(500, 50), 20.0f, SPrintf("Last r=%f. F=%f", last_best.radius, last_best.fitness).c_str());
+		glColor4ub(255,255,255,255);
+		GlyphRenderer::getDefaultRenderer()->drawString(Vector2(100, 50), 20.0f, SPrintf("Overall r=%f. F=%f", best.radius, best.fitness).c_str());
+		GlyphRenderer::getDefaultRenderer()->drawString(Vector2(500, 50), 20.0f, SPrintf("Last r=%f. F=%f", last_best.radius, last_best.fitness).c_str());
+	}
 	GlyphRenderer::getDefaultRenderer()->drawString(Vector2(100, 70), 20.0f, "Swarm Intelligence Demo");
 }
 
@@ -86,7 +92,7 @@ void SWIApp::optimizerTick()
 	std::vector<std::pair<float,int> > ranking;
 
 	// best of this generation
-	last_best = SqcConfig();
+	SqcConfig last_best;
 
 	// Calculate fitness values for each element
 	for (int i=0;i<optimizer->nelems;i++) {
@@ -115,6 +121,9 @@ void SWIApp::optimizerTick()
 	if (last_best.radius != 0.0f) {
 		std::vector<float> p;
 		last_best.collectParams(p);
+		best_list.push_back(last_best);
+		if (best_list.size() == 20)
+			best_list.pop_front();
 		graph.addTick(p);
 	}
 }

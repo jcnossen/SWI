@@ -33,9 +33,11 @@ public:
 	float overlapscore();
 	void calcFitness();
 	Vector2 getSquare(int i) {
-		return i>0 ? squares[i-1] : Vector2();
+		return i==squares.size() ? Vector2() : squares[i];
 	}
 	int nsquares() { return squares.size()+1; }
+
+	static float calcEntropy (const std::list<SqcConfig>& list);
 
 	std::vector<Vector2> squares; // square size is determined by order
 };

@@ -41,7 +41,7 @@ void SqcConfig::calcFitness()
 //	if (os > 0.0f) os += 10.0f;
 
 	overlap = os;
-	fitness = 20000 - radius - os;
+	fitness = 1000 - radius - os;
 }
 
 
@@ -97,9 +97,9 @@ void SqcConfig::scaleFit()
 
 	for(int i=0;i<sq.size();i++)
 		sq[i]*=factor;
-	// move first to (0,0) and copy back to squares vector
-	for(int i=1;i<sq.size();i++)
-		squares[i-1] = sq[i]-sq[0];
+	// move last to (0,0) and copy back to squares vector
+	for(int i=0;i<sq.size()-1;i++)
+		squares[i] = sq[i]-sq.back();
 }
 
 void SqcConfig::collectParams(std::vector<float> &params) {
@@ -147,3 +147,7 @@ void SqcConfig::computeBoundingCircle()
 	center.y=p[1];
 }
 
+float SqcConfig::calcEntropy(const std::list<SqcConfig>& list)
+{
+	
+}

@@ -44,8 +44,8 @@ void ESOptimizer::setFitness(int elem, float fitness) {
 void ESOptimizer::tick() {
 
 	const int mu=15;
-	float sigma=.3;
-	float p_crossover=.1;
+	float sigma=.3f;
+	float p_crossover=.1f;
 
 	//rank the offspring
 	std::vector<std::pair<float,int> > rank(nelems);
@@ -74,9 +74,7 @@ void ESOptimizer::tick() {
 		for(int j=0;j<ndims+nadapt;j++) 
 		{
 			float d=RandomNormalDistributed(0,sigma);
-			//d_trace("random=%f\n",d);
-			if(d!=d) exit(0);
-			matrix[i*(ndims+nadapt)+j]=parents[((rand()%1000)/1000.0<p_crossover)?p:p2][j]+d;
+			matrix[i*(ndims+nadapt)+j]=parents[((rand()%1000)/1000.0f<p_crossover)?p:p2][j]+d;
 		}
 		
 	}

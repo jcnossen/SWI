@@ -120,6 +120,9 @@ void SwarmOptimizer::initialize(int ndims, int nelems) {
     j->velocity.resize(ndims);
     j->personalBest.resize(ndims);
 		j->friendBest.resize(ndims);
+
+		for (int i=0;i<ndims;i++)
+			j->velocity[i]=UniformRandom(-10.0f, 10.0f);
   }
 
 	setupGraph(); 

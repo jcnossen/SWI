@@ -22,8 +22,8 @@ private:
 	void initRandomOptimizer(int nsquares);
 	void optimizerTick();
 
-	SqcConfig last_best; // best of last generation
-	SqcConfig best;
+	std::list<SqcConfig> best_list;
+	SqcConfig best; // overall best
 	ThreadManager threadManager;
 	Graph graph;
 };
