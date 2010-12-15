@@ -10,6 +10,8 @@
 SWIApp::SWIApp() : graph(600, -10, 10)
 {
 	int nsquares = 8;
+
+	sigma = 1.0f;
 	
 	//initRandomOptimizer(nsquares);
 	std::vector<float> ranges = std::vector<float>(nsquares * 4);
@@ -21,7 +23,7 @@ SWIApp::SWIApp() : graph(600, -10, 10)
 	SwarmConfig sc;
 	sc.graphType = ST_MULTISTAR;
 //	sc.phi1 = sc.phi2 = 0.4f;
-	sc.omega = 0.8f;
+	sc.omega = 0.7f;
 	sc.phi1 = 1.4f;
 	sc.phi2 = 1.4f;
 
@@ -74,7 +76,7 @@ void SWIApp::draw()
 		GlyphRenderer::getDefaultRenderer()->drawString(Vector2(100, 50), 20.0f, SPrintf("Overall r=%f. F=%f", best.radius, best.fitness).c_str());
 		GlyphRenderer::getDefaultRenderer()->drawString(Vector2(500, 50), 20.0f, SPrintf("Last r=%f. F=%f", last_best.radius, last_best.fitness).c_str());
 	}
-	GlyphRenderer::getDefaultRenderer()->drawString(Vector2(100, 70), 20.0f, "Swarm Intelligence Demo");
+	GlyphRenderer::getDefaultRenderer()->drawString(Vector2(100, 70), 20.0f, SPrintf("Swarm Intelligence Demo.  Sigma=%f", sigma).c_str());
 }
 
 void SWIApp::tick()
@@ -114,9 +116,12 @@ void SWIApp::optimizerTick()
 		for (int i=0;i<best.nsquares();i++)
 			d_trace(" (%f,%f);", best.getSquare(i).x, best.getSquare(i).y);
 		d_trace("\n");
+		sigma = 1.0f;
+	} else {
+		sigma *= 1.005f;
 	}
 	
-	optimizer->tick();
+	optimizer->tick(sigma*(sinf(sigma)+1.0f));
 
 	if (last_best.radius != 0.0f) {
 		std::vector<float> p;

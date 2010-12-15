@@ -132,7 +132,7 @@ void SwarmOptimizer::initialize(int ndims, int nelems) {
 
 
 //This function assumes the new fitnessvalues have just been updated
-void SwarmOptimizer::tick()
+void SwarmOptimizer::tick(float sigma)
 {
   //First update the personalBest and friendBest
 	for(ParticleVector::iterator j = swarm.begin(); j!=swarm.end(); ++j)
@@ -179,9 +179,10 @@ void SwarmOptimizer::tick()
 	  
 	  //update velocity  
     for(int i=0;i<ndims;i++) {
-      j->velocity[i]*=config.omega;
-      j->velocity[i]+=UniformRandom(0,config.phi1)*(j->personalBest[i]-j->position[i]);
-      j->velocity[i]+=UniformRandom(0,config.phi2)*(j->friendBest[i]-j->position[i]);    
+      j->velocity[i]*=config.omega*sigma;
+      j->velocity[i]+=UnitRandom() * config.phi1*sigma*(j->personalBest[i]-j->position[i]);
+      j->velocity[i]+=UnitRandom() * config.phi2*sigma*(j->friendBest[i]-j->position[i]);    
+			j->velocity[i]+=(UnitRandom()-0.5f) * sigma * .01f;
     }
 
     //update position  

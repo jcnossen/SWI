@@ -10,7 +10,7 @@ public:
 
 	void initialize(int ndims, int nelems);
 	const char* name() { return "ES"; }
-	void tick();
+	void tick(float sigma);
 	void getElem(int elem, float* params);
 	void setElem(int elem, float* params);
 	void setFitness(int elem, float fitness);
