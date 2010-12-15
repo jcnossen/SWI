@@ -15,6 +15,8 @@ int SwarmOptimizer::numGraphTypes() {
 }
 
 
+int tickcount=0;
+
 //Create friendship network graph.
 //graphType values: 0 -> star topology
 //                  1 -> cycle topology
@@ -117,7 +119,7 @@ void SwarmOptimizer::initialize(int ndims, int nelems) {
     j->personalOptimum=0;
     j->friendOptimum=0;
     j->position.resize(ndims);
-    j->velocity.resize(ndims);
+    j->velocity.resize(ndims,1.0);
     j->personalBest.resize(ndims);
 		j->friendBest.resize(ndims);
   }
@@ -133,7 +135,7 @@ void SwarmOptimizer::tick()
 	for(ParticleVector::iterator j = swarm.begin(); j!=swarm.end(); ++j)
 	{
 		//if there is an improvement...
-    if(j->fitness>j->personalOptimum)
+    if(j->fitness>=j->personalOptimum)
     {
       //update the personal best
       j->personalOptimum=j->fitness;
@@ -162,7 +164,17 @@ void SwarmOptimizer::tick()
   //Then adjust the position and velocity vectors
 	for(ParticleVector::iterator j = swarm.begin(); j != swarm.end(); ++j)
   {
-    //update velocity  
+/*
+	  //screw it up
+	  if(tickcount%100==0)
+		  for(int i=0;i<ndims;i++)
+			  j->velocity[i]=((rand()%1000)-500)/1000.0;
+	  if(tickcount%500==0) 
+		  for(int i=0;i<ndims;i++)
+			  j->position[i]+=(rand()%20)-10;
+*/  
+	  
+	  //update velocity  
     for(int i=0;i<ndims;i++) {
       j->velocity[i]*=config.omega;
       j->velocity[i]+=UniformRandom(0,config.phi1)*(j->personalBest[i]-j->position[i]);
@@ -173,6 +185,8 @@ void SwarmOptimizer::tick()
     for(int i=0;i<ndims;i++)
 			j->position[i] += j->velocity[i];
   }
+
+  tickcount++;
 }
 
 
