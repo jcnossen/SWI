@@ -9,7 +9,7 @@
 
 SWIApp::SWIApp() : graph(600, -10, 10)
 {
-	int nsquares = 15;
+	int nsquares = 2;
 
 	sigma = 1.0f;
 	best=0;

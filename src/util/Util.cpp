@@ -67,7 +67,7 @@ bool FileExists(const char *file) {
 
 float UnitRandom()
 {
-	return rand() / (float)RAND_MAX;
+	return rand() / (float)(RAND_MAX+1);
 }
 
 

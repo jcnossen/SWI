@@ -89,6 +89,7 @@ void SqcConfig::computeBoundingCircle()
 
 void SqcConfigVC::randomConfig(int n)
 {
+	n-=1;
 	squares.resize(n);
 
 	for (int i=0;i<n;i++) {
@@ -177,18 +178,41 @@ void SqcConfigVC::calcSquarePositions()
 
 
 //--------------------------------------------------------------------------------------------------------------
-// SqcConfigNC: SqcConfig with Nabour Coords
+// SqcConfigNC: SqcConfig with neighbour Coords
 //--------------------------------------------------------------------------------------------------------------
 
 
 /*
-
-
-
+ Number indicates topleft coordinate of neighbour
+ 
 */
+
+Vector2 getNeighbourSquareMid(float c)
+{
+	if (c <= 2.0f) {
+		if (c <= 1.0f) 
+			return Vector2(-1.0f + 2.0f * c, -1.0f);
+		else
+			return Vector2(1.0f, -3.0f + 2.0f*c);
+	}
+	else {
+		if (c <= 3.0f)
+			return Vector2(5.0f - 2.0f*c, 1.0f);
+		else 
+			return Vector2(-1.0f, 7.0f - c*2.0f);
+	}
+}
+
+
 
 void SqcConfigNC::randomConfig(int numSquares)
 {
+	float max = 8.0f * numSquares;
+
+	ncoords.resize(numSquares);
+	for (int i=0;i<numSquares;i++) {
+		ncoords[i] = max*UnitRandom();
+	}
 }
 
 void SqcConfigNC::calcSquarePositions()
