@@ -7,6 +7,7 @@ ESOptimizer::ESOptimizer(std::vector<float> ranges) {
 	fitness = 0;
 	this->ranges = ranges;
 	nadapt = 0;
+	tickcount=0;
 }
 
 ESOptimizer::~ESOptimizer() {
@@ -18,8 +19,9 @@ void ESOptimizer::initialize(int ndims, int nelems) {
 	this->ndims = ndims;
 	this->nelems = nelems;
 	nadapt = 1;
+	rowlen = ndims+nadapt;
 
-	matrix = new float[(ndims+nadapt)*nelems];
+	matrix = new float[rowlen*nelems];
 	fitness = new float[nelems];
 }
 
@@ -39,7 +41,6 @@ void ESOptimizer::setFitness(int elem, float fitness) {
 	this->fitness[elem] = fitness;
 }
 
-int tickcount2=0;
 
 void ESOptimizer::tick(float sigma) {
 
@@ -47,8 +48,8 @@ void ESOptimizer::tick(float sigma) {
 	float sigma_=sigma*.1f;
 	float p_crossover=.1f;
 
-	tickcount2++;
-	sigma_=fabs(sin(tickcount2/1000.0))/4;
+	tickcount++;
+	sigma_=fabsf(sinf(tickcount/1000.0f))/4;
 
 	//rank the offspring
 	std::vector<std::pair<float,int> > rank(nelems);
@@ -59,14 +60,14 @@ void ESOptimizer::tick(float sigma) {
 	}
 	std::sort(rank.begin(),rank.end());
 
-	std::vector<std::vector<float> > parents (mu,std::vector<float>(ndims));
+	std::vector<std::vector<float> > parents (mu,std::vector<float>(rowlen));
 
 	//select the parents
 	for(int i=0;i<mu;i++)
 	{
 		int p=rank[i].second;
-		for(int j=0;j<ndims;j++)
-			parents[i][j]=matrix[p*(ndims+nadapt)+j];
+		for(int j=0;j<rowlen;j++)
+			parents[i][j]=matrix[p*rowlen+j];
 	}
 
 	//create new offspring
@@ -77,7 +78,7 @@ void ESOptimizer::tick(float sigma) {
 		for(int j=0;j<ndims+nadapt;j++) 
 		{
 			float d=RandomNormalDistributed(0,sigma_);
-			matrix[i*(ndims+nadapt)+j]=parents[((rand()%1000)/1000.0f<p_crossover)?p:p2][j]+d;
+			matrix[i*rowlen+j]=parents[(UnitRandom()<p_crossover)?p:p2][j]+d;
 		}
 		
 		for(int j=0;j<ndims;j+=2)
@@ -86,8 +87,8 @@ void ESOptimizer::tick(float sigma) {
 			{
 			  int a=j/2;
 			  int b=rand()%(ndims/2);
-			  std::swap(matrix[i*(ndims+nadapt)+a*2],matrix[i*(ndims+nadapt)+b*2]);
-			  std::swap(matrix[i*(ndims+nadapt)+a*2+1],matrix[i*(ndims+nadapt)+b*2+1]);
+			  std::swap(matrix[i*rowlen+a*2],matrix[i*rowlen+b*2]);
+			  std::swap(matrix[i*rowlen+a*2+1],matrix[i*rowlen+b*2+1]);
 			}
 
 		}

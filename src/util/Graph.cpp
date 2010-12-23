@@ -24,7 +24,9 @@ void Graph::addTick(const float* d, int n)
 void Graph::render(Box2 box)
 {
 	int s = data.size();
-//	std::pair<float,float> minmax = getMinMax();
+	std::pair<float,float> minmax = getMinMax();
+	valuemin=minmax.first; 
+	valuemax=minmax.second;
 
 	glColor3ub(128,127,128);
 //	glRectf(box.a.x,box.a.y,box.b.x,box.b.y);

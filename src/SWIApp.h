@@ -17,13 +17,12 @@ public:
 	void draw();
 
 private:
-	IOptimizer* optimizer;
-
-	void initRandomOptimizer(int nsquares);
 	void optimizerTick();
-
-	std::list<SqcConfig> best_list;
-	SqcConfig best; // overall best
+	SqcConfig* createConfig();
+	
+	IOptimizer* optimizer;
+	std::list<SqcConfig*> best_list;
+	SqcConfig *best; // overall best
 	ThreadManager threadManager;
 	Graph graph;
 	float sigma;

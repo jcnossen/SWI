@@ -1,8 +1,22 @@
+//--------------------------------------------------------------------------------------------------------------
+// SqcConfig
+//
+// This file contains 3 class:
+//  SqcConfig: Abstract base class for the square-in-circle packing problem
+//	SqcConfigVC: Class that stores the configuration with vector coordinates
+//	SqcConfigNC: Class that stores the configuration with 'nabour' coordinates
+//--------------------------------------------------------------------------------------------------------------
 #include "StdIncl.h"
 #include "SqcConfig.h"
 #include "OpenGL.h"
 #include "Miniball.h"
 #include "RenderSystem.h"
+
+
+//--------------------------------------------------------------------------------------------------------------
+// SqcConfig base class
+//--------------------------------------------------------------------------------------------------------------
+
 
 void SqcConfig::render(float displayRadius)
 {
@@ -17,7 +31,6 @@ void SqcConfig::render(float displayRadius)
 		glColor(Color::Red);
 		glRectLines(p.x - hw, p.y - hw, p.x + hw, p.y + hw);
 	}
-
 }
 
 float SqcConfig::overlapscore()
@@ -45,7 +58,36 @@ void SqcConfig::calcFitness()
 }
 
 
-void SqcConfig::randomConfig(int n)
+void SqcConfig::computeBoundingCircle()
+{
+	Miniball<2> mb;
+	for(int i=1;i<=(int)nsquares();i++)
+	{
+		Point<2> p;
+		for(int d0=-1;d0<=1;d0+=2)
+			for(int d1=-1;d1<=1;d1+=2)
+			{
+				Vector2 v = getSquare(i-1);
+				p[0]=v.x+.5*i*d0;
+				p[1]=v.y+.5*i*d1;
+				mb.check_in(p);
+			}
+	}
+	mb.build();
+
+	radius=sqrt(mb.squared_radius());
+	Point<2> p=mb.center();
+	center.x=p[0]; 
+	center.y=p[1];
+}
+
+
+//--------------------------------------------------------------------------------------------------------------
+// SqcConfigVC: SqcConfig with Vector Coords
+//--------------------------------------------------------------------------------------------------------------
+
+
+void SqcConfigVC::randomConfig(int n)
 {
 	squares.resize(n);
 
@@ -55,13 +97,12 @@ void SqcConfig::randomConfig(int n)
 
 		squares[i] = Vector2(angle) * dist;
 		//squares[i].x=squares[i].y=i;
-		
 	}
 }
 
 
 //scale such that something touches and nothing overlaps
-void SqcConfig::scaleFit()
+void SqcConfigVC::scaleFit()
 {
 	std::vector<Vector2> sq;
 	sq.reserve(nsquares());
@@ -102,15 +143,16 @@ void SqcConfig::scaleFit()
 		squares[i] = sq[i]-sq.back();
 }
 
-void SqcConfig::collectParams(std::vector<float> &params) {
-	params.resize(squares.size()*2);
+std::vector<float> SqcConfigVC::collectParams() {
+	std::vector<float> params(squares.size()*2);
 	for (int i=0;i<squares.size();i++) {
 		params[i*2+0] = squares[i].x;
 		params[i*2+1] = squares[i].y;
 	}
+	return params;
 }
 
-void SqcConfig::initFromParams(std::vector<float>& src) {
+void SqcConfigVC::initFromParams(std::vector<float>& src) {
 	squares.resize(src.size()/2);
 	for(int i=0;i<squares.size();i++) {
 		squares[i].x = src[i*2+0];
@@ -118,36 +160,39 @@ void SqcConfig::initFromParams(std::vector<float>& src) {
 	}
 }
 
-void SqcConfig::multiply(Vector2 v)
+void SqcConfigVC::multiply(Vector2 v)
 {
 	for(int i=0;i<squares.size();i++)
 		squares[i] *= v;
 }
 
-void SqcConfig::computeBoundingCircle()
-{
-	Miniball<2> mb;
-	for(int i=1;i<=(int)nsquares();i++)
-	{
-		Point<2> p;
-		for(int d0=-1;d0<=1;d0+=2)
-			for(int d1=-1;d1<=1;d1+=2)
-			{
-				Vector2 v = getSquare(i-1);
-				p[0]=v.x+.5*i*d0;
-				p[1]=v.y+.5*i*d1;
-				mb.check_in(p);
-			}
-	}
-	mb.build();
 
-	radius=sqrt(mb.squared_radius());
-	Point<2> p=mb.center();
-	center.x=p[0]; 
-	center.y=p[1];
+void SqcConfigVC::calcSquarePositions()
+{
+	squarePos.resize(squares.size()+1);
+	for(int i=0;i<squares.size();i++)
+		squarePos[i] = squares[i];
+	squarePos[squares.size()] = Vector2();
 }
 
-float SqcConfig::calcEntropy(const std::list<SqcConfig>& list)
+
+//--------------------------------------------------------------------------------------------------------------
+// SqcConfigNC: SqcConfig with Nabour Coords
+//--------------------------------------------------------------------------------------------------------------
+
+
+/*
+
+
+
+*/
+
+void SqcConfigNC::randomConfig(int numSquares)
+{
+}
+
+void SqcConfigNC::calcSquarePositions()
 {
 	
 }
+
